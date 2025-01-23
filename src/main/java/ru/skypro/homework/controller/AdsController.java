@@ -44,15 +44,15 @@ public class AdsController {
                     array = @ArraySchema(schema = @Schema(implementation = Ads.class)))
     )
     @GetMapping
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getAllAds() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "Получить инфо об объявлении")
+    @Operation(summary = "Получить информацию об объявлении")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "OK: возвращает инфо об объявлении",
+                    description = "OK: возвращает информацию об объявлении",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ExtendedAd.class))
             ),
@@ -62,7 +62,7 @@ public class AdsController {
             )
     })
     @GetMapping("/{id}")
-    public ResponseEntity<?> getAdInfo(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> getAds(@PathVariable("id") Integer id) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -74,12 +74,12 @@ public class AdsController {
                     array = @ArraySchema(schema = @Schema(implementation = Ads.class)))
     )
     @GetMapping("/me")
-    public ResponseEntity<?> getUsersAds() {
+    public ResponseEntity<?> getAdsMe() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
-    @Operation(summary = "Создать объявление")
+    @Operation(summary = "Добавить объявление")
     @ApiResponse(
             responseCode = "201",
             description = "CREATED: объявление создано",
@@ -87,7 +87,7 @@ public class AdsController {
                     schema = @Schema(implementation = AdDTO.class))
     )
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createAd(@RequestPart CreateOrUpdateAd properties,
+    public ResponseEntity<?> addAd(@RequestPart CreateOrUpdateAd properties,
                                       @RequestParam MultipartFile image) throws IOException {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -111,13 +111,13 @@ public class AdsController {
             )
     })
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateAd(@PathVariable Integer id,
+    public ResponseEntity<?> updateAds(@PathVariable Integer id,
                                       @RequestBody CreateOrUpdateAd ad) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
-    @Operation(summary = "Обновление изображения объявления",
+    @Operation(summary = "Обновление картинки объявления",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Изображение успешно обновлено",
                             content = @Content(mediaType = "application/json",
@@ -132,7 +132,7 @@ public class AdsController {
                     )
             })
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateAdImage(@PathVariable("id") Integer id,
+    public ResponseEntity<?> updateImage(@PathVariable("id") Integer id,
                                            @RequestParam("image") MultipartFile image) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -154,7 +154,7 @@ public class AdsController {
             )
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAd(@PathVariable Integer id) {
+    public ResponseEntity<?> removeAd(@PathVariable Integer id) {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

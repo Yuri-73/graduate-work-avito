@@ -45,7 +45,7 @@ public class UserController {
                     schema = @Schema(implementation = UserDTO.class))
     )
     @GetMapping("/me")
-    public ResponseEntity<?> getUserData() {
+    public ResponseEntity<?> getUser() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -56,7 +56,7 @@ public class UserController {
                     schema = @Schema(implementation = UpdateUserDTO.class))
     )
     @PatchMapping("/me")
-    public ResponseEntity<?> updateUserData(@RequestBody UpdateUserDTO updateUserDTO) {
+    public ResponseEntity<?> updateUser(@RequestBody UpdateUserDTO updateUserDTO) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -67,7 +67,7 @@ public class UserController {
                     schema = @Schema(implementation = UpdateUserDTO.class))
     )
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateUserAvatar(@RequestParam MultipartFile image) {
+    public ResponseEntity<?> updateUserImage(@RequestParam MultipartFile image) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
