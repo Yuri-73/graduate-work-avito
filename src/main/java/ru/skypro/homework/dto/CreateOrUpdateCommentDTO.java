@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Size;
+
 /**
  * Data Transfer Object (DTO) для представления объявления.
  * <p>
@@ -22,5 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateOrUpdateCommentDTO {
+
+    @Size(min = 8, max = 64)
     private String text;
 }
