@@ -1,8 +1,8 @@
 package ru.skypro.homework.dto.user;
 
 import lombok.Data;
-
 import ru.skypro.homework.dto.Role;
+
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -25,7 +25,6 @@ public class Register {
     private String lastName;
 
     @Pattern(regexp = "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}")
-
     private String phone;
 
     private Role role;
