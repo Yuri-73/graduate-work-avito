@@ -19,7 +19,6 @@ import javax.validation.constraints.Size;
  *
  * @author Chowo
  */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -39,7 +39,7 @@ public class AdsController {
     @Operation(summary = "Получить список всех объявлений")
     @ApiResponse(
             responseCode = "200",
-            description = "OK: возвращает список пользователей",
+            description = "OK: возвращает список всех объявлений",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     array = @ArraySchema(schema = @Schema(implementation = Ads.class)))
     )
@@ -66,10 +66,10 @@ public class AdsController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "Получить список объявлений пользователя")
+    @Operation(summary = "Получение объявлений авторизованного пользователя")
     @ApiResponse(
             responseCode = "200",
-            description = "OK: возвращает список пользователей",
+            description = "OK: получен список объявлений авторизованного пользователя",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     array = @ArraySchema(schema = @Schema(implementation = Ads.class)))
     )

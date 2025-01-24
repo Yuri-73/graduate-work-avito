@@ -19,8 +19,6 @@ import lombok.NoArgsConstructor;
  *
  * @author Chowo
  */
-
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
