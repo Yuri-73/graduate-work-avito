@@ -18,6 +18,10 @@ import ru.skypro.homework.dto.CommentDTO;
 import ru.skypro.homework.dto.CommentsDTO;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDTO;
 
+/**
+ * @author Chowo
+ */
+
 @RestController
 @RequestMapping("/ads")
 @RequiredArgsConstructor
@@ -26,6 +30,10 @@ import ru.skypro.homework.dto.CreateOrUpdateCommentDTO;
 @Tag(name = "Комментарии", description = "Управление комментариями объявления")
 public class CommentController {
 
+    /**
+     * Метод для получения всех комментариев объявления
+     * @return возвращает список всех комментариев объявления по id объявления
+     */
     @Operation(summary = "Получение комментариев объявления")
     @ApiResponses(value = {
             @ApiResponse(
@@ -49,6 +57,11 @@ public class CommentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
+    /**
+     * Метод для добавления комментария к объявлению по id объявления
+     * @return возвращает добавленный комментарий объявления
+     */
     @Operation(summary = "Добавление комментария к объявлению")
     @ApiResponses(value = {
             @ApiResponse(
@@ -73,7 +86,10 @@ public class CommentController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-
+    /**
+     * Метод для удаления объявления
+     * @return возвращает статус 200 если комментарий был удален
+     */
     @Operation(summary = "Удаление комментария")
     @ApiResponses(value = {
             @ApiResponse(
@@ -103,6 +119,10 @@ public class CommentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * Метод для обновления комментария по id объявления
+     * @return возвращает измененный комментарий
+     */
     @Operation(summary = "Обновление комментария")
     @ApiResponses(value = {
             @ApiResponse(
