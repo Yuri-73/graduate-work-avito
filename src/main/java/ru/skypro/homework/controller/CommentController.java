@@ -14,9 +14,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.CommentDTO;
-import ru.skypro.homework.dto.CommentsDTO;
-import ru.skypro.homework.dto.CreateOrUpdateCommentDTO;
+import ru.skypro.homework.dto.comment.CommentDTO;
+import ru.skypro.homework.dto.comment.CommentsDTO;
+import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 
 @RestController
 @RequestMapping("/ads")
