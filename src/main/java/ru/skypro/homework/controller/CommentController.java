@@ -18,6 +18,10 @@ import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CommentsDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 
+/**
+ * @author Chowo
+ */
+
 @RestController
 @RequestMapping("/ads")
 @RequiredArgsConstructor
@@ -26,6 +30,10 @@ import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 @Tag(name = "Комментарии", description = "Управление комментариями объявления")
 public class CommentController {
 
+    /**
+     * Метод для получения всех комментариев объявления
+     * @return возвращает список всех комментариев объявления по id объявления
+     */
     @Operation(summary = "Получение комментариев объявления")
     @ApiResponses(value = {
             @ApiResponse(
@@ -45,10 +53,15 @@ public class CommentController {
             )
     })
     @GetMapping("/{id}/comments")
-    public ResponseEntity<CommentsDTO> getComments(@RequestParam @PathVariable("Ad ID") Integer id) {
+    public ResponseEntity<CommentsDTO> getComments(@RequestParam @PathVariable("adId") Integer id) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
+    /**
+     * Метод для добавления комментария к объявлению по id объявления
+     * @return возвращает добавленный комментарий объявления
+     */
     @Operation(summary = "Добавление комментария к объявлению")
     @ApiResponses(value = {
             @ApiResponse(
@@ -68,12 +81,15 @@ public class CommentController {
             )
     })
     @PostMapping("/{id}/comments")
-    public ResponseEntity<CommentDTO> postComment(@RequestParam @PathVariable("Ad ID") Integer id,
+    public ResponseEntity<CommentDTO> postComment(@RequestParam @PathVariable("adId") Integer id,
                                                   @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-
+    /**
+     * Метод для удаления объявления
+     * @return возвращает статус 200 если комментарий был удален
+     */
     @Operation(summary = "Удаление комментария")
     @ApiResponses(value = {
             @ApiResponse(
@@ -98,11 +114,15 @@ public class CommentController {
             )
     })
     @DeleteMapping("/{id}/comments/{commentId}")
-    public ResponseEntity<?> deleteComment(@RequestParam @PathVariable("Ad ID") Integer adId,
-                                           @RequestParam @PathVariable("Comment ID") Integer commentId) {
+    public ResponseEntity<?> deleteComment(@RequestParam @PathVariable("adId") Integer adId,
+                                           @RequestParam @PathVariable("commentId") Integer commentId) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * Метод для обновления комментария по id объявления
+     * @return возвращает измененный комментарий
+     */
     @Operation(summary = "Обновление комментария")
     @ApiResponses(value = {
             @ApiResponse(
@@ -123,8 +143,8 @@ public class CommentController {
             )
     })
     @PatchMapping("/{id}/comments/{commentId}")
-    public ResponseEntity<CommentDTO> updateComment(@RequestParam @PathVariable("Ad ID") Integer id,
-                                                    @RequestParam @PathVariable("Comment ID") Integer commentId,
+    public ResponseEntity<CommentDTO> updateComment(@RequestParam @PathVariable("adId") Integer id,
+                                                    @RequestParam @PathVariable("commentId") Integer commentId,
                                                     @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
