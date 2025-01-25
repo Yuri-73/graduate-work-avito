@@ -18,9 +18,13 @@ import ru.skypro.homework.dto.user.NewPassword;
 import ru.skypro.homework.dto.user.UpdateUserDTO;
 import ru.skypro.homework.dto.user.UserDTO;
 
+/**
+ * @author Yuri-73
+ */
 @RestController
 @RequestMapping("users")
 @RequiredArgsConstructor
+@CrossOrigin(value = "http://localhost:3000")
 @Validated
 @Slf4j
 @Tag(name = "Пользователи", description = "Управление данными пользователей")

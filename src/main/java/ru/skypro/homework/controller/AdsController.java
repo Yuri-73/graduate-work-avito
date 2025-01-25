@@ -23,11 +23,16 @@ import ru.skypro.homework.dto.ad.ExtendedAd;
 
 import java.io.IOException;
 
+/**
+ * @author Yuri-73
+ */
 @RestController
 @RequestMapping("ads")
+@CrossOrigin(value = "http://localhost:3000")
 @RequiredArgsConstructor
 @Validated
 @Slf4j
+
 @Tag(name = "Объявления", description = "Интерфейс для управления объявлениями о продаже")
 @ApiResponses(value = {
         @ApiResponse(responseCode = "401",
@@ -75,7 +80,7 @@ public class AdsController {
     )
     @GetMapping("/me")
     public ResponseEntity<?> getAdsMe() {
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
@@ -134,7 +139,7 @@ public class AdsController {
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateImage(@PathVariable("id") Integer id,
                                            @RequestParam("image") MultipartFile image) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 

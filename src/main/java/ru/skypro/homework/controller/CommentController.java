@@ -25,6 +25,7 @@ import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 @RestController
 @RequestMapping("/ads")
 @RequiredArgsConstructor
+@CrossOrigin(value = "http://localhost:3000")
 @Validated
 @Slf4j
 @Tag(name = "Комментарии", description = "Управление комментариями объявления")
