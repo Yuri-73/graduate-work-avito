@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
  * Он предназначен для упрощения обработки и представления информации о объявлениях в пользовательском интерфейсе.
  * </p>
  *
- * @author fifimova
  */
 @Data
 @NoArgsConstructor
