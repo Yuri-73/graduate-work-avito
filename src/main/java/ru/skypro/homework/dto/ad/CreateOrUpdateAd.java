@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
  * Он предназначен для упрощения процессов создания и изменения объявлений, обеспечивая при этом достаточный уровень детализации и валидации входных данных.
  * </p>
  *
- * @author fifimova
+ * @author Yuri-73
  */
 @Data
 @NoArgsConstructor
