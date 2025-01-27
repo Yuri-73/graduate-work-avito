@@ -1,8 +1,7 @@
 package ru.skypro.homework.dto.user;
 
 import lombok.Data;
-import ru.skypro.homework.dto.Role;
-
+import ru.skypro.homework.entity.enums.Role;
 
 /**
  * Класс регистрации нового пользователя.

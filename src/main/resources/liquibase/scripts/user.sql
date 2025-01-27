@@ -12,4 +12,15 @@ CREATE TABLE ads (
     CONSTRAINT ads_pk PRIMARY KEY (id)
     );
 
+CREATE TABLE users (
+                       id INT GENERATED ALWAYS AS IDENTITY,
+                       username TEXT NOT NULL UNIQUE,
+                       password TEXT NOT NULL,
+                       first_name TEXT NOT NULL,
+                       last_name TEXT NOT NULL,
+                       phone TEXT NOT NULL,
+                       role TEXT NOT NULL,
+
+                       CONSTRAINT users_pk PRIMARY KEY (id)
+                       );
 
