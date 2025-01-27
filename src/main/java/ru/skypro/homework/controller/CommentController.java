@@ -14,7 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.comment.CommentsDTO;
+import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 
 /**
@@ -40,7 +40,7 @@ public class CommentController {
             responseCode="200",
             description = "OK: возвращает комментарии объявления",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    array = @ArraySchema(schema = @Schema(implementation = CommentsDTO.class)))),
+                    array = @ArraySchema(schema = @Schema(implementation = CommentDTO.class)))),
             @ApiResponse(
                     responseCode = "401",
                     description = "UNAUTHORIZED: нет доступа к объявлению",
@@ -53,7 +53,7 @@ public class CommentController {
             )
     })
     @GetMapping("/{id}/comments")
-    public ResponseEntity<CommentsDTO> getComments(@RequestParam @PathVariable("adId") Integer id) {
+    public ResponseEntity<CommentDTO> getComments(@RequestParam @PathVariable("adId") Integer id) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -68,7 +68,7 @@ public class CommentController {
                     responseCode = "201",
                     description = "CREATED: комментарий добавлен",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            array = @ArraySchema(schema = @Schema(implementation = CommentsDTO.class)))),
+                            array = @ArraySchema(schema = @Schema(implementation = CommentDTO.class)))),
             @ApiResponse(
                     responseCode = "401",
                     description = "UNAUTHORIZED: нет доступа к объявлению",
@@ -81,8 +81,8 @@ public class CommentController {
             )
     })
     @PostMapping("/{id}/comments")
-    public ResponseEntity<CommentsDTO> postComment(@RequestParam @PathVariable("adId") Integer id,
-                                                   @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
+    public ResponseEntity<CommentDTO> postComment(@RequestParam @PathVariable("adId") Integer id,
+                                                  @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -129,7 +129,7 @@ public class CommentController {
                     responseCode = "200",
                     description = "OK: комментарий изменен",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = CommentsDTO.class))
+                            schema = @Schema(implementation = CommentDTO.class))
             ),
             @ApiResponse(
                     responseCode = "403",
@@ -143,9 +143,9 @@ public class CommentController {
             )
     })
     @PatchMapping("/{id}/comments/{commentId}")
-    public ResponseEntity<CommentsDTO> updateComment(@RequestParam @PathVariable("adId") Integer id,
-                                                     @RequestParam @PathVariable("commentId") Integer commentId,
-                                                     @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
+    public ResponseEntity<CommentDTO> updateComment(@RequestParam @PathVariable("adId") Integer id,
+                                                    @RequestParam @PathVariable("commentId") Integer commentId,
+                                                    @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,31 +1,28 @@
 package ru.skypro.homework.dto.comment;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 /**
- * Класс DTO (Data Transfer Object) для представления комментария в приложении.
+ * Data Transfer Object (DTO) для представления объявления.
  * <p>
- * Этот класс используется для передачи данных о комментариях между различными частями
- * приложения, такими как контроллеры и представления. Он содержит информацию о комментарии,
- * такую как идентификатор автора, изображение автора, имя автора, дата создания,
- * идентификатор комментария и текст комментария.
+ * Класс {@code AdDTO} используется для передачи данных объявлений между слоями приложения,
+ * сокращая количество передаваемой информации и скрывая детали реализации сущности {@code Ad}.
  * </p>
  * <p>
- * Аннотация {@code @Data} от Lombok автоматически генерирует методы для доступа к полям,
- * такие как геттеры и сеттеры, а также методы {@code equals}, {@code hashCode} и {@code toString}.
- * </p>
- * <p>
- * Поля данного класса представляют атрибуты комментария и используются для отображения
- * информации о комментарии.
+ * Этот класс включает основные данные объявления, такие как идентификатор пользователя-автора,
+ * URL изображения, уникальный идентификатор объявления (pk), цену и заголовок.
+ * Он предназначен для упрощения обработки и представления информации о объявлениях в пользовательском интерфейсе.
  * </p>
  */
-@Data
+@Setter
+@Getter
+@NoArgsConstructor
 public class CommentsDTO {
 
-    private Integer author;
-    private String authorImage;
-    private String authorFirstName;
-    private Long createdAt;
-    private Integer pk;
-    private String text;
+    private Integer count;
+    private List<CommentDTO> results;
 }
