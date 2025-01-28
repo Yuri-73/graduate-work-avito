@@ -9,27 +9,28 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
+@Table(name = "comments")
 public class Comment {
 
     //@OneToOne
-    @Column(name = "author")
+//    @Column(name = "author")
     private Integer author;
 
-    @Column(name = "authorImage")
+    @Column(name = "author_image")
     private String authorImage;
 
-    @Column(name = "authorFirstName")
+    @Column(name = "author_first_name")
     private String authorFirstName;
 
-    @Column(name = "createdAt")
+    @Column(name = "created_at")
     private Long createdAt;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pk")
+//    @Column(name = "pk")
     private Integer pk;
 
-    @Column(name = "text")
+//    @Column(name = "text")
     private String text;
 
     public Comment(Integer author, String authorImage, String authorFirstName, String text) {

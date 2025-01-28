@@ -4,16 +4,16 @@
 
 create table if not exists public.comments
 (
-    pk                  BIGSERIAL PRIMARY KEY,
-    author              BIGINT,
-    authorImage         varchar,
-    authorFirstname     varchar,
-    createdAt           BIGINT,
-    query               varchar(64)
+    author                  INT,
+    author_image            varchar,
+    author_first_name       varchar,
+    created_at              BIGINT,
+    pk                      INT PRIMARY KEY,
+    text                    varchar(64)
     );
 
 CREATE TABLE ads (
-    id              BIGSERIAL PRIMARY KEY,
+    pk              INT PRIMARY KEY,
     title           varchar,
     description     varchar,
     price           INT,
@@ -22,7 +22,7 @@ CREATE TABLE ads (
     );
 
 CREATE TABLE users (
-    id               BIGSERIAL PRIMARY KEY,
+    id               INT PRIMARY KEY,
     username         varchar NOT NULL UNIQUE,
     password         varchar NOT NULL,
     first_name       varchar NOT NULL,
