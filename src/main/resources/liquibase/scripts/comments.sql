@@ -13,12 +13,12 @@ create table if not exists public.comments
     );
 
 CREATE TABLE ads (
-    pk              INT PRIMARY KEY,
+    id              INT PRIMARY KEY,
     title           varchar,
     description     varchar,
     price           INT,
-    image_id        INT,
-    user_id         INT
+    image           varchar,
+    author          INT
     );
 
 CREATE TABLE users (

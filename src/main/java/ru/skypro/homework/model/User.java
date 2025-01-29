@@ -33,8 +33,4 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-//    @JsonIgnore
-//    @ToString.Exclude
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-//    private List<Ad> ads;
 }
