@@ -23,10 +23,10 @@ CREATE TABLE ads (
 
 CREATE TABLE users (
     id               INT PRIMARY KEY,
-    username         varchar NOT NULL UNIQUE,
-    password         varchar NOT NULL,
+    email         varchar NOT NULL UNIQUE,
     first_name       varchar NOT NULL,
     last_name        varchar NOT NULL,
     phone            varchar NOT NULL,
-    role             varchar NOT NULL
+    role             varchar NOT NULL,
+    image            varchar NOT NULL
     );

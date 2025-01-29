@@ -24,8 +24,7 @@ public class User {
     private Integer id;
 
     @Column(unique = true, nullable = false)
-    private String username;
-    private String password;
+    private String email;
     private String firstName;
     private String lastName;
     private String phone;
@@ -33,4 +32,5 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private String image;
 }

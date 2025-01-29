@@ -3,6 +3,7 @@ package ru.skypro.homework.dto.user;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.skypro.homework.dto.Role;
 
 /**
  * Класс для представления данных о пользователе.
@@ -21,6 +22,6 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String phone;
-    private String role;
+    private Role role;
     private String image;
 }
