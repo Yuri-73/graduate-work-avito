@@ -23,7 +23,7 @@ CREATE TABLE public.ads
     image       BYTEA,
 
     user_id     INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES public.users (id)
+    FOREIGN KEY (user_id) REFERENCES public.users (id) ON DELETE CASCADE
 );
 
 create table public.comments
@@ -37,6 +37,6 @@ create table public.comments
 
     ad_id             INTEGER NOT NULL,
     FOREIGN KEY (ad_id) REFERENCES ads (id) ON DELETE CASCADE,
-    FOREIGN KEY (author_id) REFERENCES public.users (id)
+    FOREIGN KEY (author_id) REFERENCES public.users (id) ON DELETE CASCADE
 );
 

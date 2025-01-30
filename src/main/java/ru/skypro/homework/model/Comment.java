@@ -10,6 +10,15 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
+ * {@link Класс} AdComment комментарий объявления <br>
+ * {@link Integer} pk - идентификатор комментария (not null) <br>
+ * {@link User} author - автор комментария (not null) <br>
+ * {@link String} authorImage - аватарка автора (not null) <br>
+ * {@link String} authorFirstName - имя создателя комментария (not null) <br>
+ * {@link LocalDateTime} createdAt  - дата и время создания комментария (not null) <br>
+ * {@link String} text - текст комментария (not null) <br>
+ * {@link Ad} ad  - комментируемое объявление (not null) <br>
+ *
  * @author Chowo
  */
 @Entity
@@ -17,6 +26,10 @@ import java.util.Objects;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "comments")
 public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pk")
+    private Integer pk;
 
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
@@ -30,11 +43,6 @@ public class Comment {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pk")
-    private Integer pk;
 
     @Column(name = "text")
     private String text;

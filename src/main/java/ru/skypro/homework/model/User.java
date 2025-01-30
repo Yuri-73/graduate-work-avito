@@ -3,10 +3,23 @@ package ru.skypro.homework.model;
 import lombok.*;
 import ru.skypro.homework.dto.Role;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * {@link Класс} User автора объявления <br>
+ * {@link Integer} id - идентификатор автора (not null) <br>
+ * {@link String} username - логин автора (not null) <br>
+ * {@link String} password - пароль автора (not null) <br>
+ * {@link String} firstname - имя автора (not null) <br>
+ * {@link String} lastname - фамилия автора (not null) <br>
+ * {@link String} phone  - телефон (not null) <br>
+ * {@link Role} role - роль (not null) <br>
+ * {@link Byte} image - аватарка автора (not null) <br>
+ * {@link List<Ad>} ads - список объявлений автора <br>
+ * {@link List<Comment>} commentsList - список комментариев автора <br>
+ *
  * @author Yuri-73
  */
 @Data
@@ -19,6 +32,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String username;
     private String password;
     private String firstname;
