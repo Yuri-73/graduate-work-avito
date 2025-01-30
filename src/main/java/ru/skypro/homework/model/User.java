@@ -3,6 +3,7 @@ package ru.skypro.homework.model;
 import lombok.*;
 import ru.skypro.homework.dto.Role;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +34,9 @@ public class User {
     private byte [] image;
 
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Ad> ads;
 
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comment> commentsList;
 }

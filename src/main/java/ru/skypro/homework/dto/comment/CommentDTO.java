@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 /**
  * Класс DTO (Data Transfer Object) для представления комментария в приложении.
@@ -33,7 +34,7 @@ public class CommentDTO {
     private Integer author;
     private String authorImage;
     private String authorFirstName;
-    private Long createdAt;
+    private LocalDateTime createdAt;
     private Integer pk;
     @Size(min = 8, max = 64)
     private String text;
