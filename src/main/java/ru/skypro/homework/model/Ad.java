@@ -3,10 +3,7 @@ package ru.skypro.homework.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Data
@@ -23,6 +20,8 @@ public class Ad {
     private String description;
     private Integer price;
     private String image;
-    private Integer author;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 }

@@ -1,16 +1,11 @@
-package ru.skypro.homework;
+package ru.skypro.homework.mapper;
 
 import lombok.RequiredArgsConstructor;
 import ru.skypro.homework.dto.ad.AdDTO;
 import ru.skypro.homework.dto.ad.ExtendedAd;
-import ru.skypro.homework.dto.user.Register;
-import ru.skypro.homework.dto.user.UserDTO;
 import ru.skypro.homework.model.Ad;
 import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.UserRepository;
-import ru.skypro.homework.exception.UserNotFoundException;
-
-import java.security.Principal;
 
 @RequiredArgsConstructor
 public class AdMapper {
@@ -20,19 +15,20 @@ public class AdMapper {
      * @param adDTO Dto AdDTO.
      * @return объект класса Ad.
      */
-    public Ad adDtoToAd(AdDTO adDto, User user) {
+    public Ad adDtoToAd(AdDTO adDto, ExtendedAd extendedAd) {
         Ad newAd = new Ad();
 
-        newAd.setImage(adDto.getImage());
+        newAd.setId(adDto.getPk());
         newAd.setTitle(adDto.getTitle());
         newAd.setPrice(adDto.getPrice());
-        newAd.setAuthor(user.getId());
+        newAd.setImage(adDto.getImage());
+
+        newAd.setDescription(extendedAd.getDescription());
         return newAd;
     }
 
     /**
      * Метод преобразует объект класса Ad в Dto AdDTO.
-     *
      * @param ad объект класса Ad.
      * @return Dto AdDTO.
      */
@@ -43,7 +39,7 @@ public class AdMapper {
         adDTO.setTitle(ad.getTitle());
         adDTO.setPrice(ad.getPrice());
         adDTO.setImage("/ads/" + ad.getId() + "/image");
-        adDTO.setAuthor(ad.getAuthor());
+        adDTO.setAuthor(ad.getUser().getId());
         return adDTO;
     }
 
@@ -56,9 +52,9 @@ public class AdMapper {
         ExtendedAd extendedAd = new ExtendedAd();
 
         extendedAd.setPk(ad.getId());
-        extendedAd.setAuthorFirstName(user.getFirstName());
-        extendedAd.setAuthorLastName(user.getLastName());
-        extendedAd.setEmail(user.getEmail());
+        extendedAd.setAuthorFirstName(user.getFirstname());
+        extendedAd.setAuthorLastName(user.getLastname());
+        extendedAd.setEmail(user.getPassword());
         extendedAd.setPhone(user.getPhone());
         extendedAd.setTitle(ad.getTitle());
         extendedAd.setPrice(ad.getPrice());
