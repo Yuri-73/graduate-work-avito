@@ -5,6 +5,8 @@ import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.model.Comment;
 import ru.skypro.homework.model.User;
 
+import java.time.LocalDateTime;
+
 /**
  * @author Chowo
  */
@@ -15,7 +17,7 @@ public class CommentMapper {
         Integer author = comment.getAuthor().getId();
         String authorImage = comment.getAuthorImage();
         String authorFirstName = comment.getAuthorFirstName();
-        Long createdAt = comment.getCreatedAt();
+        LocalDateTime createdAt = comment.getCreatedAt();
         Integer pk = comment.getPk();
         String text = comment.getText();
         return new CommentDTO(author, authorImage, authorFirstName, createdAt, pk, text);

@@ -32,7 +32,7 @@ create table public.comments
     author_id         INT NOT NULL,
     author_Image      varchar(255) NOT NULL,
     author_First_name varchar(255) NOT NULL,
-    created_At        BIGINT NOT NULL,
+    created_At        TIMESTAMP NOT NULL,
     text              varchar(255) NOT NULL,
 
     ad_id             INTEGER NOT NULL,

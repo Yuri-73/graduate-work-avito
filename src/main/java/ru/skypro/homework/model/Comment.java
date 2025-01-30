@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -26,7 +27,7 @@ public class Comment {
     private String authorFirstName;
 
     @Column(name = "created_at")
-    private Long createdAt;
+    private LocalDateTime createdAt;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,14 +36,6 @@ public class Comment {
 
     @Column(name = "text")
     private String text;
-
-    public Comment(User author, String authorImage, String authorFirstName, String text) {
-        this.author = author;
-        this.authorImage = authorImage;
-        this.authorFirstName = authorFirstName;
-        this.createdAt = System.currentTimeMillis();
-        this.text = text;
-    }
 
     public Comment() {
 
