@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author Yuri-73
@@ -31,4 +32,8 @@ public class Ad {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    @OneToMany(mappedBy = "ad", cascade = CascadeType.REMOVE)
+    private List<Comment> commentList;
 }
+

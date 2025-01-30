@@ -29,9 +29,14 @@ CREATE TABLE public.ads
 create table public.comments
 (
     pk                INT PRIMARY KEY,
-    author            INT,
-    author_Image      varchar(255),
-    author_First_name varchar(255),
-    created_At        BIGINT,
-    text              varchar(255)
+    author_id         INT NOT NULL,
+    author_Image      varchar(255) NOT NULL,
+    author_First_name varchar(255) NOT NULL,
+    created_At        BIGINT NOT NULL,
+    text              varchar(255) NOT NULL,
+
+    ad_id             INTEGER NOT NULL,
+    FOREIGN KEY (ad_id) REFERENCES ads (id) ON DELETE CASCADE,
+    FOREIGN KEY (author_id) REFERENCES public.users (id)
 );
+
