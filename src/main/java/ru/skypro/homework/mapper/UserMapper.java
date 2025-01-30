@@ -14,16 +14,16 @@ public class UserMapper {
      * @param userDTO Dto UserDTO.
      * @return объект класса User.
      */
-    public User userDtoAndRegisterToUser(UserDTO userDTO) {
+
+    public User registerToUser(Register register, UserDTO userDTO) {
         User newUser = new User();
-
-        newUser.setId(userDTO.getId());
-        newUser.setFirstName(userDTO.getFirstName());
-        newUser.setLastName(userDTO.getLastName());
-        newUser.setPhone(userDTO.getPhone());
-        newUser.setRole(userDTO.getRole());
+        newUser.setUsername(register.getUsername());
+        newUser.setPassword(register.getPassword());
+        newUser.setFirstname(register.getFirstName());
+        newUser.setLastname(register.getLastName());
+        newUser.setPhone(register.getPhone());
+        newUser.setRole(register.getRole());
         newUser.setImage(userDTO.getImage());
-
         return newUser;
     }
 
@@ -36,9 +36,9 @@ public class UserMapper {
         UserDTO userDto = new UserDTO();
 
         userDto.setId(user.getId());
-        userDto.setEmail(user.getEmail());
-        userDto.setFirstName(user.getFirstName());
-        userDto.setLastName(user.getLastName());
+        userDto.setEmail(user.getPassword());
+        userDto.setFirstName(user.getFirstname());
+        userDto.setLastName(user.getLastname());
         userDto.setPhone(user.getPhone());
         userDto.setRole(user.getRole());
         userDto.setImage(user.getImage());

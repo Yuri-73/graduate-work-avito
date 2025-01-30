@@ -2,31 +2,36 @@
 
 --changeset vhodakovskiy:1
 
-create table if not exists public.comments
+CREATE TABLE public.users
 (
-    author                  INT,
-    author_image            varchar,
-    author_first_name       varchar,
-    created_at              BIGINT,
-    pk                      INT PRIMARY KEY,
-    text                    varchar(64)
-    );
+    id         SERIAL PRIMARY KEY,
+    username   varchar(255) NOT NULL UNIQUE,
+    password   varchar(255) NOT NULL,
+    firstname  varchar(255) NOT NULL,
+    lastname   varchar(255) NOT NULL,
+    phone      varchar(255) NOT NULL,
+    role       varchar(255) NOT NULL,
+    image      varchar(255) NOT NULL
+);
 
-CREATE TABLE ads (
-    id              INT PRIMARY KEY,
-    title           varchar,
-    description     varchar,
-    price           INT,
-    image           varchar,
-    author          INT
-    );
+CREATE TABLE public.ads
+(
+    id          SERIAL PRIMARY KEY,
+    title       varchar(255) NOT NULL,
+    description varchar(255) NOT NULL,
+    price       INTEGER NOT NULL,
+    image       varchar(255),
 
-CREATE TABLE users (
-    id               INT PRIMARY KEY,
-    email         varchar NOT NULL UNIQUE,
-    first_name       varchar NOT NULL,
-    last_name        varchar NOT NULL,
-    phone            varchar NOT NULL,
-    role             varchar NOT NULL,
-    image            varchar NOT NULL
-    );
+    user_id     INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES public.users (id)
+);
+
+create table public.comments
+(
+    pk                INT PRIMARY KEY,
+    author            INT,
+    author_Image      varchar(255),
+    author_First_name varchar(255),
+    created_At        BIGINT,
+    text              varchar(255)
+);
