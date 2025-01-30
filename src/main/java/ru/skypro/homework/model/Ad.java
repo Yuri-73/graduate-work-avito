@@ -19,7 +19,11 @@ public class Ad {
     private String title;
     private String description;
     private Integer price;
-    private String image;
+//    @Lob
+//    @Column(columnDefinition = "oid")
+    @Basic(fetch=FetchType.LAZY)
+    private byte [] image;
+
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

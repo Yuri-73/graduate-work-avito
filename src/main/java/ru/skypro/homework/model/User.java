@@ -24,7 +24,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private String image;
+//    @Lob
+//    @Column(columnDefinition = "oid")
+    @Basic(fetch=FetchType.LAZY)
+    private byte [] image;
+
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Ad> ads;

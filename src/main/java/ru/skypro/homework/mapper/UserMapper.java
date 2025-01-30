@@ -23,7 +23,7 @@ public class UserMapper {
         newUser.setLastname(register.getLastName());
         newUser.setPhone(register.getPhone());
         newUser.setRole(register.getRole());
-        newUser.setImage(userDTO.getImage());
+        newUser.setImage(userDTO.getImage().getBytes());
         return newUser;
     }
 
@@ -41,7 +41,7 @@ public class UserMapper {
         userDto.setLastName(user.getLastname());
         userDto.setPhone(user.getPhone());
         userDto.setRole(user.getRole());
-        userDto.setImage(user.getImage());
+        userDto.setImage(user.getImage().toString());
 
         return userDto;
     }
