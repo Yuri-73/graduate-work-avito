@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
  * при создании или обновлении комментария. Он включает в себя поле "text",
  * представляющее текст комментария.
  * </p>
+ * @author Chowo
  */
 @Data
 @AllArgsConstructor

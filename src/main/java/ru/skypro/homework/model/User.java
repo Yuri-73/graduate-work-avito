@@ -5,6 +5,9 @@ import ru.skypro.homework.dto.Role;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * @author Yuri-73
+ */
 @Data
 @Entity
 @NoArgsConstructor

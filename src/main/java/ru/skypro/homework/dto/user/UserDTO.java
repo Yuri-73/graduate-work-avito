@@ -12,6 +12,7 @@ import ru.skypro.homework.dto.Role;
  * таких как идентификатор (id), адрес электронной почты (email), имя (firstName),
  * фамилия (lastName), номер телефона (phone), роль (role) и изображение профиля (image).
  * </p>
+ * @author Yuri-73
  */
 @Data
 @AllArgsConstructor

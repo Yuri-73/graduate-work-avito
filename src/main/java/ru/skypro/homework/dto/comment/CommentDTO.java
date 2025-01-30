@@ -23,6 +23,7 @@ import javax.validation.constraints.Size;
  * Поля данного класса представляют атрибуты комментария и используются для отображения
  * информации о комментарии.
  * </p>
+ * @author Chowo
  */
 @Data
 @AllArgsConstructor

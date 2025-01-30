@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.model.Comment;
 
+/**
+ * @author Chowo
+ */
 @Component
 public class CommentMapper {
 

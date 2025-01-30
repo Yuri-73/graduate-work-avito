@@ -10,6 +10,7 @@ import ru.skypro.homework.dto.Role;
  * Класс {@code Register} используется для создания аккаунта и авторизации пользователя,
  * включая логин (username), пароль (password), имя (firstName), фамилию (lastName), номер телефона (phone) и его роль (role).
  * </p>
+ * @author Yuri-73
  */
 @Data
 public class Register {

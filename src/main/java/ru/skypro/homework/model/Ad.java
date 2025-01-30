@@ -5,6 +5,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
+/**
+ * @author Yuri-73
+ */
 @Entity
 @Data
 @NoArgsConstructor

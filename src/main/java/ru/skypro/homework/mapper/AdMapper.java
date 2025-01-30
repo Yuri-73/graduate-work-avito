@@ -7,6 +7,9 @@ import ru.skypro.homework.model.Ad;
 import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.UserRepository;
 
+/**
+ * @author Yuri-73
+ */
 @RequiredArgsConstructor
 public class AdMapper {
     private final UserRepository userRepository;

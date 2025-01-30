@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
  * Класс {@code NewPassword} используется для передачи данных о смене пароля пользователя,
  * включая текущий пароль (currentPassword) и новый пароль (newPassword).
  * </p>
+ * @author Yuri-73
  */
 @Data
 @AllArgsConstructor

@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
  * Класс {@code UpdateUserDTO} используется для передачи данных, которые могут быть обновлены
  * пользователем, такие как имя (firstName), фамилия (lastName) и номер телефона (phone).
  * </p>
+ * @author Yuri-73
  */
 @Data
 @AllArgsConstructor

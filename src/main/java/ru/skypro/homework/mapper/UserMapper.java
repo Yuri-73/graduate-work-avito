@@ -5,6 +5,9 @@ import ru.skypro.homework.dto.user.Register;
 import ru.skypro.homework.dto.user.UserDTO;
 import ru.skypro.homework.model.User;
 
+/**
+ * @author Yuri-73
+ */
 @Component
 public class UserMapper {
     /**

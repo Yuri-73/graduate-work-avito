@@ -18,7 +18,7 @@ import java.util.List;
  * или в ответах API, где необходимо вместе со списком предоставить дополнительные метаданные.
  * </p>
  *
- * @author fifimova
+ * @author Yuri-73
  */
 @Data
 @NoArgsConstructor

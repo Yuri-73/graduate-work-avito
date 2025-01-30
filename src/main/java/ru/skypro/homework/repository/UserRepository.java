@@ -5,8 +5,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.homework.model.User;
 
-import java.util.Optional;
-
+/**
+ * @author Yuri-73
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
