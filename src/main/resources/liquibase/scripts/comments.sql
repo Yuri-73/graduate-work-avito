@@ -11,16 +11,16 @@ CREATE TABLE public.users
     lastname   varchar(255) NOT NULL,
     phone      varchar(255) NOT NULL,
     role       varchar(255) NOT NULL,
-    image      BYTEA
+    author_Image      BYTEA
 );
 
 CREATE TABLE public.ads
 (
-    id          SERIAL PRIMARY KEY,
-    title       varchar(255) NOT NULL,
-    description varchar(255) NOT NULL,
-    price       INTEGER NOT NULL,
-    image       BYTEA,
+    id             SERIAL PRIMARY KEY,
+    title          varchar(255) NOT NULL,
+    description    varchar(255) NOT NULL,
+    price          INTEGER NOT NULL,
+    image          BYTEA,
 
     user_id     INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES public.users (id) ON DELETE CASCADE
@@ -30,7 +30,7 @@ create table public.comments
 (
     pk                INT PRIMARY KEY,
     author_id         INT NOT NULL,
-    author_Image      varchar(255) NOT NULL,
+    author_Image      BYTEA,
     author_First_name varchar(255) NOT NULL,
     created_At        TIMESTAMP NOT NULL,
     text              varchar(255) NOT NULL,

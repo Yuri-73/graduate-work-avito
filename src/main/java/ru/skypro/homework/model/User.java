@@ -45,7 +45,8 @@ public class User {
 //    @Lob
 //    @Column(columnDefinition = "oid")
     @Basic(fetch=FetchType.LAZY)
-    private byte [] image;
+    @Column(name = "author_Image")
+    private byte [] authorImage;
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

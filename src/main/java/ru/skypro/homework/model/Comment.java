@@ -35,8 +35,9 @@ public class Comment {
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private User author;
 
-    @Column(name = "author_image")
-    private String authorImage;
+    @Basic(fetch=FetchType.LAZY)
+    @Column(name = "author_Image")
+    private byte [] authorImage;
 
     @Column(name = "author_first_name")
     private String authorFirstName;

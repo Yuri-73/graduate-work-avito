@@ -15,7 +15,7 @@ public class CommentMapper {
 
     public CommentDTO toDto(Comment comment) {
         Integer author = comment.getAuthor().getId();
-        String authorImage = comment.getAuthorImage();
+        String authorImage = comment.getAuthorImage().toString();
         String authorFirstName = comment.getAuthorFirstName();
         LocalDateTime createdAt = comment.getCreatedAt();
         Integer pk = comment.getPk();
@@ -26,7 +26,7 @@ public class CommentMapper {
     public Comment toComment(CommentDTO commentDTO, User user) {
         Comment comment = new Comment();
         comment.setAuthor(user);
-        comment.setAuthorImage(commentDTO.getAuthorImage());
+        comment.setAuthorImage(commentDTO.getAuthorImage().getBytes());
         comment.setAuthorFirstName(commentDTO.getAuthorFirstName());
         comment.setCreatedAt(commentDTO.getCreatedAt());
         comment.setPk(commentDTO.getPk());
