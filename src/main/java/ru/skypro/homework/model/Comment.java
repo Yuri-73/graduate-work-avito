@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -35,13 +36,7 @@ public class Comment {
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private User author;
 
-    @Basic(fetch=FetchType.LAZY)
-    @Column(name = "author_Image")
-    private byte [] authorImage;
-
-    @Column(name = "author_first_name")
-    private String authorFirstName;
-
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

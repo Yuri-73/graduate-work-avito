@@ -28,10 +28,8 @@ CREATE TABLE public.ads
 
 create table public.comments
 (
-    pk                INT PRIMARY KEY,
+    pk                SERIAL PRIMARY KEY,
     author_id         INT NOT NULL,
-    author_Image      BYTEA,
-    author_First_name varchar(255) NOT NULL,
     created_At        TIMESTAMP NOT NULL,
     text              varchar(255) NOT NULL,
 

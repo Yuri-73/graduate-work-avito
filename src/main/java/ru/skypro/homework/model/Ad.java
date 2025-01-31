@@ -3,8 +3,8 @@ package ru.skypro.homework.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -34,10 +34,10 @@ public class Ad {
     private String title;
     private String description;
     private Integer price;
-//    @Lob
+    //    @Lob
 //    @Column(columnDefinition = "oid")
-    @Basic(fetch=FetchType.LAZY)
-    private byte [] image;
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] image;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

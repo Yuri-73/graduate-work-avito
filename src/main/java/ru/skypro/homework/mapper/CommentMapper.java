@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 @Component
 public class CommentMapper {
 
-    public CommentDTO toDto(Comment comment) {
+    public CommentDTO toDto(Comment comment, User user) {
         Integer author = comment.getAuthor().getId();
-        String authorImage = comment.getAuthorImage().toString();
-        String authorFirstName = comment.getAuthorFirstName();
+        String authorImage = user.getAuthorImage().toString();
+        String authorFirstName = user.getFirstname();
         LocalDateTime createdAt = comment.getCreatedAt();
         Integer pk = comment.getPk();
         String text = comment.getText();
@@ -26,8 +26,6 @@ public class CommentMapper {
     public Comment toComment(CommentDTO commentDTO, User user) {
         Comment comment = new Comment();
         comment.setAuthor(user);
-        comment.setAuthorImage(commentDTO.getAuthorImage().getBytes());
-        comment.setAuthorFirstName(commentDTO.getAuthorFirstName());
         comment.setCreatedAt(commentDTO.getCreatedAt());
         comment.setPk(commentDTO.getPk());
         comment.setText(commentDTO.getText());
