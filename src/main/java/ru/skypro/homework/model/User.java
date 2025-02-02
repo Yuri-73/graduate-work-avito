@@ -46,7 +46,7 @@ public class User {
 //    @Column(columnDefinition = "oid")
     @Basic(fetch=FetchType.LAZY)
     @Column(name = "author_Image")
-    private byte [] authorImage;
+    private String authorImage;
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

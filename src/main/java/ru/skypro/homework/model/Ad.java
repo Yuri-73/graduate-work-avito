@@ -37,7 +37,7 @@ public class Ad {
     //    @Lob
 //    @Column(columnDefinition = "oid")
     @Basic(fetch = FetchType.LAZY)
-    private byte[] image;
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

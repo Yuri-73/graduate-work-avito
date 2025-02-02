@@ -2,10 +2,14 @@ package ru.skypro.homework.mapper;
 
 import lombok.RequiredArgsConstructor;
 import ru.skypro.homework.dto.ad.AdDTO;
+import ru.skypro.homework.dto.ad.AdsDTO;
+import ru.skypro.homework.dto.ad.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ad.ExtendedAd;
 import ru.skypro.homework.model.Ad;
-import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.UserRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Yuri-73
@@ -13,20 +17,22 @@ import ru.skypro.homework.repository.UserRepository;
 @RequiredArgsConstructor
 public class AdMapper {
     private final UserRepository userRepository;
+
     /**
-     * Метод преобразует Dto AdDTO в объект класса Ad.
-     * @param adDTO Dto AdDTO.
+     * Метод преобразует Dto CreateOrUpdateAd в объект класса Ad.
+     * @param createOrUpdateAd Dto.
      * @return объект класса Ad.
      */
-    public Ad adDtoToAd(AdDTO adDto, ExtendedAd extendedAd) {
+    public static Ad createOrUpdateAdToAd(CreateOrUpdateAd createOrUpdateAd) {
+        if (createOrUpdateAd == null) {
+            throw new IllegalArgumentException("Попытка конвертировать createOrUpdateAd == null");
+        }
         Ad newAd = new Ad();
 
-        newAd.setId(adDto.getPk());
-        newAd.setTitle(adDto.getTitle());
-        newAd.setPrice(adDto.getPrice());
-        newAd.setImage(adDto.getImage().getBytes());
+        newAd.setTitle(createOrUpdateAd.getTitle());
+        newAd.setPrice(createOrUpdateAd.getPrice());
+        newAd.setDescription(createOrUpdateAd.getDescription());
 
-        newAd.setDescription(extendedAd.getDescription());
         return newAd;
     }
 
@@ -35,14 +41,18 @@ public class AdMapper {
      * @param ad объект класса Ad.
      * @return Dto AdDTO.
      */
-    public AdDTO adToAdDto(Ad ad) {
+    public static AdDTO adToAdDto(Ad ad) {
+        if (ad == null) {
+            throw new IllegalArgumentException("Попытка конвертировать ad == null");
+        }
         AdDTO adDTO = new AdDTO();
 
         adDTO.setPk(ad.getId());
         adDTO.setTitle(ad.getTitle());
         adDTO.setPrice(ad.getPrice());
-        adDTO.setImage("/ads/" + ad.getId() + "/image");
+        adDTO.setImage(ad.getImage());
         adDTO.setAuthor(ad.getUser().getId());
+
         return adDTO;
     }
 
@@ -51,19 +61,34 @@ public class AdMapper {
      * @param ad объект класса Ad.
      * @return Dto ExtendedAd.
      */
-    public ExtendedAd toAdExtendedDtoOut(Ad ad, User user) {
+    public static ExtendedAd AdToExtendedDtoOut(Ad ad) {
+        if (ad == null) {
+            throw new IllegalArgumentException("Попытка конвертировать ad == null");
+        }
         ExtendedAd extendedAd = new ExtendedAd();
 
         extendedAd.setPk(ad.getId());
-        extendedAd.setAuthorFirstName(user.getFirstname());
-        extendedAd.setAuthorLastName(user.getLastname());
-        extendedAd.setEmail(user.getPassword());
-        extendedAd.setPhone(user.getPhone());
         extendedAd.setTitle(ad.getTitle());
         extendedAd.setPrice(ad.getPrice());
         extendedAd.setDescription(ad.getDescription());
-        extendedAd.setImage(ad.getImage().toString());
+        extendedAd.setImage(ad.getImage());
+
+        extendedAd.setAuthorFirstName(ad.getUser().getFirstname());
+        extendedAd.setAuthorLastName(ad.getUser().getLastname());
+        extendedAd.setEmail(ad.getUser().getPassword());
+        extendedAd.setPhone(ad.getUser().getPhone());
+
         return extendedAd;
     }
+
+
+    public AdsDTO adsToAdsDto(List<Ad> ads) {
+        AdsDTO adsDTO = new AdsDTO();
+        adsDTO.setCount(ads.size());
+        adsDTO.setResults(ads.stream().map(e -> adToAdDto(e)).collect(Collectors.toList()));
+        return adsDTO;
+    }
+
+
 }
 

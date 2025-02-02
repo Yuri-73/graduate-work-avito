@@ -12,12 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.ad.AdDTO;
-import ru.skypro.homework.dto.ad.Ads;
+import ru.skypro.homework.dto.ad.AdsDTO;
 import ru.skypro.homework.dto.ad.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ad.ExtendedAd;
 
@@ -46,7 +45,7 @@ public class AdsController {
             responseCode = "200",
             description = "OK: возвращает список всех объявлений",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    array = @ArraySchema(schema = @Schema(implementation = Ads.class)))
+                    array = @ArraySchema(schema = @Schema(implementation = AdsDTO.class)))
     )
     @GetMapping
     public ResponseEntity<?> getAllAds() {
@@ -76,7 +75,7 @@ public class AdsController {
             responseCode = "200",
             description = "OK: получен список объявлений авторизованного пользователя",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    array = @ArraySchema(schema = @Schema(implementation = Ads.class)))
+                    array = @ArraySchema(schema = @Schema(implementation = AdsDTO.class)))
     )
     @GetMapping("/me")
     public ResponseEntity<?> getAdsMe() {

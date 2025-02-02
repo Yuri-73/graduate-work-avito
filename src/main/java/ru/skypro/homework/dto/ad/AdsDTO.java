@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Класс-контейнер для группы DTO объявлений.
  * <p>
- * Класс {@code Ads} предназначен для удобной упаковки и передачи нескольких DTO объявлений,
+ * Класс {@code AdsDTO} предназначен для удобной упаковки и передачи нескольких DTO объявлений,
  * {@code AdDTO}, а также для предоставления дополнительной информации, такой как общее количество
  * объявлений в этом наборе.
  * </p>
@@ -23,7 +23,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Ads {
+public class AdsDTO {
 
     private Integer count;
 

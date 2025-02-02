@@ -11,7 +11,7 @@ CREATE TABLE public.users
     lastname   varchar(255) NOT NULL,
     phone      varchar(255) NOT NULL,
     role       varchar(255) NOT NULL,
-    author_Image      BYTEA
+    author_Image      varchar(255) NOT NULL
 );
 
 CREATE TABLE public.ads
@@ -20,7 +20,7 @@ CREATE TABLE public.ads
     title          varchar(255) NOT NULL,
     description    varchar(255) NOT NULL,
     price          INTEGER NOT NULL,
-    image          BYTEA,
+    image          varchar(255) NOT NULL,
 
     user_id     INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES public.users (id) ON DELETE CASCADE
