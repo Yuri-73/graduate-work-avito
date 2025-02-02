@@ -1,4 +1,4 @@
-package ru.skypro.homework.dto;
+package ru.skypro.homework.dto.user;
 
 import lombok.Data;
 
@@ -11,6 +11,7 @@ import lombok.Data;
  * логин (username) и пароль (password). Эти данные используются для аутентификации
  * пользователя в системе.
  * </p>
+ * @author Yuri-73
  */
 @Data
 public class Login {
