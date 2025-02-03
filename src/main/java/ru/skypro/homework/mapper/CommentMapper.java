@@ -22,7 +22,7 @@ public class CommentMapper {
             throw new IllegalArgumentException("Попытка конвертировать comment == null");
         }
         Integer author = comment.getAuthor().getId();
-        String authorImage = comment.getAuthor().getAuthorImage();
+        String authorImage = comment.getAuthor().getImage().getImagePath();
         String authorFirstName = comment.getAuthor().getFirstname();
         LocalDateTime createdAt = comment.getCreatedAt();
         Integer pk = comment.getPk();

@@ -34,10 +34,6 @@ public class Ad {
     private String title;
     private String description;
     private Integer price;
-    //    @Lob
-//    @Column(columnDefinition = "oid")
-    @Basic(fetch = FetchType.LAZY)
-    private String image;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -45,5 +41,9 @@ public class Ad {
 
     @OneToMany(mappedBy = "ad", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ad_image_id", referencedColumnName = "id")
+    private Image image;
 }
 

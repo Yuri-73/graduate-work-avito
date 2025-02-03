@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
  */
 @RequiredArgsConstructor
 public class AdMapper {
+
     private final UserRepository userRepository;
 
     /**
@@ -50,9 +51,8 @@ public class AdMapper {
         adDTO.setPk(ad.getId());
         adDTO.setTitle(ad.getTitle());
         adDTO.setPrice(ad.getPrice());
-        adDTO.setImage(ad.getImage());
+        adDTO.setImage(ad.getImage().getImagePath());
         adDTO.setAuthor(ad.getUser().getId());
-
         return adDTO;
     }
 
@@ -71,7 +71,7 @@ public class AdMapper {
         extendedAd.setTitle(ad.getTitle());
         extendedAd.setPrice(ad.getPrice());
         extendedAd.setDescription(ad.getDescription());
-        extendedAd.setImage(ad.getImage());
+        extendedAd.setImage(ad.getImage().getImagePath());
 
         extendedAd.setAuthorFirstName(ad.getUser().getFirstname());
         extendedAd.setAuthorLastName(ad.getUser().getLastname());

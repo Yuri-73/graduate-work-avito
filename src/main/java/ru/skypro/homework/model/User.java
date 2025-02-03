@@ -42,16 +42,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-//    @Lob
-//    @Column(columnDefinition = "oid")
-    @Basic(fetch=FetchType.LAZY)
-    @Column(name = "author_Image")
-    private String authorImage;
-
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Ad> ads;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> commentsList;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "author_image_id", referencedColumnName = "id")
+    private Image image;
 }
