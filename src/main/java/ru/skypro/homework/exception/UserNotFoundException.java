@@ -10,6 +10,6 @@ public class UserNotFoundException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        return String.format("User with username: '%s' not found!", username);
+        return String.format("Пользователь: '%s' не найден!", username);
     }
 }
