@@ -1,5 +1,7 @@
 package ru.skypro.homework.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,9 @@ public class AuthController {
 
     private final AuthService authService;
 
+    @Operation(summary = "Аутентификация пользователя")
+    @ApiResponse(responseCode = "200", description = "Успешная аутентификация")
+    @ApiResponse(responseCode = "401", description = "Неавторизованный доступ")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Login login) {
         if (authService.login(login.getUsername(), login.getPassword())) {
@@ -30,6 +35,9 @@ public class AuthController {
         }
     }
 
+    @Operation(summary = "Регистрация нового пользователя")
+    @ApiResponse(responseCode = "201", description = "Пользователь успешно зарегистрирован")
+    @ApiResponse(responseCode = "400", description = "Некорректные данные для регистрации")
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Register register) {
         if (authService.register(register)) {
