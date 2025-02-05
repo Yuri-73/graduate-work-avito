@@ -43,12 +43,12 @@ public class UserMapper {
         UserDTO userDto = new UserDTO();
 
         userDto.setId(user.getId());
-        userDto.setEmail(user.getPassword());
+        userDto.setEmail(user.getUsername());
         userDto.setFirstName(user.getFirstname());
         userDto.setLastName(user.getLastname());
         userDto.setPhone(user.getPhone());
         userDto.setRole(user.getRole());
-        userDto.setImage(user.getImage().getImagePath());
+        userDto.setImage("src/main/java/ru/skypro/homework/images");
 
         return userDto;
     }

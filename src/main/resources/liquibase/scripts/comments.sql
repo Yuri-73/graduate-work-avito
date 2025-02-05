@@ -28,8 +28,9 @@ CREATE TABLE public.ads
     title           varchar(255) NOT NULL,
     description     varchar(255) NOT NULL,
     price           INTEGER      NOT NULL,
-    ad_image_id     INTEGER      NOT NULL,
+    ad_image_id     INTEGER,
     user_id         INTEGER      NOT NULL,
+
 
     FOREIGN KEY (user_id) REFERENCES public.users (id) ON DELETE CASCADE,
     FOREIGN KEY (ad_image_id) REFERENCES public.image (id)
