@@ -27,6 +27,7 @@ public class WebSecurityConfig {
             "/webjars/**",
             "/login",
             "/register"
+
     };
 
     // filterChain(HttpSecurity http) настраивает правила доступа к URL-адресам и методам при помощи объекта HttpSecurity.
