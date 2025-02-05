@@ -6,6 +6,8 @@ import ru.skypro.homework.dto.ad.AdsDTO;
 import ru.skypro.homework.dto.ad.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ad.ExtendedAd;
 import ru.skypro.homework.model.Ad;
+import ru.skypro.homework.model.Image;
+import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.UserRepository;
 
 import java.util.List;
@@ -21,10 +23,10 @@ public class AdMapper {
 
     /**
      * Метод преобразует Dto CreateOrUpdateAd в объект класса Ad.
-     * @param createOrUpdateAd Dto.
+     * @param createOrUpdateAd Dto, user, image.
      * @return объект класса Ad.
      */
-    public static Ad createOrUpdateAdToAd(CreateOrUpdateAd createOrUpdateAd) {
+    public Ad createOrUpdateAdToAd(CreateOrUpdateAd createOrUpdateAd, User user, Image image) {
         if (createOrUpdateAd == null) {
             throw new IllegalArgumentException("Попытка конвертировать createOrUpdateAd == null");
         }
@@ -33,6 +35,29 @@ public class AdMapper {
         newAd.setTitle(createOrUpdateAd.getTitle());
         newAd.setPrice(createOrUpdateAd.getPrice());
         newAd.setDescription(createOrUpdateAd.getDescription());
+        newAd.setUser(user);
+        newAd.setImage(image);
+
+        return newAd;
+    }
+
+    /**
+     * Метод преобразует Dto CreateOrUpdateAd в объект класса Ad.
+     * @param ad, createOrUpdateAd Dto, user, image.
+     * @return объект класса Ad.
+     */
+    public Ad createOrUpdateAdToAd(Ad ad, CreateOrUpdateAd createOrUpdateAd) {
+        if (createOrUpdateAd == null) {
+            throw new IllegalArgumentException("Попытка конвертировать createOrUpdateAd == null");
+        }
+        Ad newAd = new Ad();
+
+        newAd.setTitle(createOrUpdateAd.getTitle());
+        newAd.setPrice(createOrUpdateAd.getPrice());
+        newAd.setDescription(createOrUpdateAd.getDescription());
+        newAd.setUser(ad.getUser());
+        newAd.setImage(ad.getImage());
+        newAd.setId(ad.getId());
 
         return newAd;
     }
@@ -42,7 +67,7 @@ public class AdMapper {
      * @param ad объект класса Ad.
      * @return Dto AdDTO.
      */
-    public static AdDTO adToAdDto(Ad ad) {
+    public AdDTO adToAdDto(Ad ad) {
         if (ad == null) {
             throw new IllegalArgumentException("Попытка конвертировать ad == null");
         }
@@ -61,7 +86,7 @@ public class AdMapper {
      * @param ad объект класса Ad.
      * @return Dto ExtendedAd.
      */
-    public static ExtendedAd AdToExtendedDtoOut(Ad ad) {
+    public ExtendedAd adToExtendedDtoOut(Ad ad) {
         if (ad == null) {
             throw new IllegalArgumentException("Попытка конвертировать ad == null");
         }
