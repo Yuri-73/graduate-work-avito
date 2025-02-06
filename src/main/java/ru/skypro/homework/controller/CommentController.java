@@ -12,23 +12,29 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.comment.CommentDTO;
+import ru.skypro.homework.dto.comment.CommentsDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
+import ru.skypro.homework.service.CommentService;
+import ru.skypro.homework.service.impl.CommentServiceImpl;
 
 /**
  * @author Chowo
  */
 
 @RestController
-@RequestMapping("/ads")
+@RequestMapping("ads")
 @RequiredArgsConstructor
 @CrossOrigin(value = "http://localhost:3000")
 @Validated
 @Slf4j
 @Tag(name = "Комментарии", description = "Управление комментариями объявления")
 public class CommentController {
+
+    private final CommentServiceImpl commentService;
 
     /**
      * Метод для получения всех комментариев объявления
@@ -53,8 +59,8 @@ public class CommentController {
             )
     })
     @GetMapping("/{id}/comments")
-    public ResponseEntity<CommentDTO> getComments(@RequestParam @PathVariable("adId") Integer id) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<CommentsDTO> getComments(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(commentService.getComments(id));
     }
 
 
@@ -81,9 +87,9 @@ public class CommentController {
             )
     })
     @PostMapping("/{id}/comments")
-    public ResponseEntity<CommentDTO> postComment(@RequestParam @PathVariable("adId") Integer id,
+    public ResponseEntity<CommentDTO> postComment(@PathVariable("id") Integer id,
                                                   @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentService.postComment(id, createOrUpdateCommentDTO));
     }
 
     /**
@@ -113,9 +119,11 @@ public class CommentController {
                     content = @Content
             )
     })
+    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
     @DeleteMapping("/{id}/comments/{commentId}")
-    public ResponseEntity<?> deleteComment(@RequestParam @PathVariable("adId") Integer adId,
-                                           @RequestParam @PathVariable("commentId") Integer commentId) {
+    public ResponseEntity<?> deleteComment(@PathVariable("id") Integer id,
+                                           @PathVariable("commentId") Integer commentId) {
+        commentService.deleteComment(id, commentId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -142,10 +150,11 @@ public class CommentController {
                     content = @Content
             )
     })
+    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
     @PatchMapping("/{id}/comments/{commentId}")
-    public ResponseEntity<CommentDTO> updateComment(@RequestParam @PathVariable("adId") Integer id,
-                                                    @RequestParam @PathVariable("commentId") Integer commentId,
+    public ResponseEntity<CommentDTO> updateComment(@PathVariable("id") Integer id,
+                                                    @PathVariable("commentId") Integer commentId,
                                                     @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok(commentService.updateComment(id, commentId, createOrUpdateCommentDTO));
     }
 }

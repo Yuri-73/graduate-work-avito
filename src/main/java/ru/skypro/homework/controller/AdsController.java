@@ -97,11 +97,11 @@ public class AdsController {
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = AdDTO.class))
     )
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AdDTO> addAd(@RequestPart CreateOrUpdateAd properties,
                                        @RequestPart MultipartFile image,
                                        Principal principal) throws IOException {
-        System.out.println("slldkjfslkjflksjflkjs;lfkj--------" + principal.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(adService.addAd(properties, image, principal.getName()));
     }
 
@@ -123,6 +123,7 @@ public class AdsController {
                     description = "NOT_FOUND: объявление не найдено"
             )
     })
+    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
     @PatchMapping("/{id}")
     public ResponseEntity<AdDTO> updateAds(@PathVariable Integer id,
                                       @RequestBody CreateOrUpdateAd ad) {
@@ -144,6 +145,7 @@ public class AdsController {
                             description = "NOT_FOUND: объявление не найдено"
                     )
             })
+    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateImage(@PathVariable("id") Integer id,
                                            @RequestParam("image") MultipartFile image) throws IOException {
@@ -167,10 +169,10 @@ public class AdsController {
             )
     })
 
-    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd == authentication.principal.username")
+    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> removeAd(@PathVariable Integer id) {
+    public ResponseEntity<?> removeAd(@PathVariable("id") Integer id) {
         adService.delete(id);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -22,10 +22,11 @@ import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.ImageService;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 
 @Slf4j
-
+@Transactional
 @Service
 public class AdServiceImpl implements AdService {
 
@@ -70,9 +71,8 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdDTO addAd(CreateOrUpdateAd properties, MultipartFile image, String userName) throws IOException {
         User user = userRepository.findByUsername(userName).orElseThrow(() -> new UserNotFoundException(userName));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + user);
 //        Image image1 = imageService.uploadAdImage(properties, image);
-        Image dud = new Image(1, imagePath);
+        Image dud = null;
         Ad ad = adMapper.createOrUpdateAdToAd(properties, user, dud);
         adRepository.save(ad);
         return adMapper.adToAdDto(ad);
@@ -95,7 +95,8 @@ public class AdServiceImpl implements AdService {
             throw new AdNotFoundException(adId);
         }
         Ad ad = adRepository.findById(adId).orElse(null);
-        return imageService.updateAdImage(ad.getImage().getId(), image);
+//        return imageService.updateAdImage(ad.getImage().getId(), image);
+        return null;
     }
 
     @Override
