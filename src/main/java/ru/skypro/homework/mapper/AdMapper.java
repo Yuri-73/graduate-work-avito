@@ -1,6 +1,7 @@
 package ru.skypro.homework.mapper;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.ad.AdDTO;
 import ru.skypro.homework.dto.ad.AdsDTO;
 import ru.skypro.homework.dto.ad.CreateOrUpdateAd;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 /**
  * @author Yuri-73
  */
+@Component
 @RequiredArgsConstructor
 public class AdMapper {
 
@@ -36,7 +38,7 @@ public class AdMapper {
         newAd.setPrice(createOrUpdateAd.getPrice());
         newAd.setDescription(createOrUpdateAd.getDescription());
         newAd.setUser(user);
-        newAd.setImage(image);
+//        newAd.setImage(image);
 
         return newAd;
     }
@@ -56,7 +58,7 @@ public class AdMapper {
         newAd.setPrice(createOrUpdateAd.getPrice());
         newAd.setDescription(createOrUpdateAd.getDescription());
         newAd.setUser(ad.getUser());
-        newAd.setImage(ad.getImage());
+//        newAd.setImage(ad.getImage());
         newAd.setId(ad.getId());
 
         return newAd;
@@ -76,7 +78,7 @@ public class AdMapper {
         adDTO.setPk(ad.getId());
         adDTO.setTitle(ad.getTitle());
         adDTO.setPrice(ad.getPrice());
-        adDTO.setImage(ad.getImage().getImagePath());
+//        adDTO.setImage(ad.getImage().getImagePath());
         adDTO.setAuthor(ad.getUser().getId());
         return adDTO;
     }
@@ -96,7 +98,7 @@ public class AdMapper {
         extendedAd.setTitle(ad.getTitle());
         extendedAd.setPrice(ad.getPrice());
         extendedAd.setDescription(ad.getDescription());
-        extendedAd.setImage(ad.getImage().getImagePath());
+//        extendedAd.setImage(ad.getImage().getImagePath());
 
         extendedAd.setAuthorFirstName(ad.getUser().getFirstname());
         extendedAd.setAuthorLastName(ad.getUser().getLastname());
