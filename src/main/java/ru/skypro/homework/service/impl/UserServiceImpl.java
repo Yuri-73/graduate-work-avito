@@ -8,11 +8,14 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.user.NewPassword;
 import ru.skypro.homework.dto.user.UserDTO;
 import ru.skypro.homework.dto.user.UpdateUserDTO;
+import ru.skypro.homework.exception.ImageSaveException;
 import ru.skypro.homework.exception.IncorrectPasswordException;
 import ru.skypro.homework.exception.UserNotFoundException;
 import ru.skypro.homework.mapper.UserMapper;
+import ru.skypro.homework.model.Image;
 import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.UserRepository;
+import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
 
 import java.io.IOException;
@@ -27,14 +30,15 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
+    private final ImageService imageService;
 
     /**
      * Метод для смены пароля пользователя.
      * Кодировка нового пароля пользователя с помощью бина PasswordEncoder.
      *
      * @param newPassword Dto NewPassword.
-     * @param principal интерфейс для получения username пользователя.
-     * @throws UserNotFoundException выбрасывается, если пользователь не найден в таблице user.
+     * @param principal   интерфейс для получения username пользователя.
+     * @throws UserNotFoundException      выбрасывается, если пользователь не найден в таблице user.
      * @throws IncorrectPasswordException выбрасывается, если текущий пароль в NewPassword не совпадает с паролем в таблице user.
      */
     @Override
@@ -68,7 +72,7 @@ public class UserServiceImpl implements UserService {
      * Метод для изменения информации аутентифицированного пользователя.
      *
      * @param updateUserDTO Dto UpdateUserDto.
-     * @param principal интерфейс для получения username пользователя.
+     * @param principal     интерфейс для получения username пользователя.
      * @return Dto UpdateUserDto.
      * @throws UserNotFoundException выбрасывается, если пользователь не найден в таблице user.
      */
@@ -90,13 +94,23 @@ public class UserServiceImpl implements UserService {
      * @param image картинка с аватаркой.
      * @param principal интерфейс для получения username пользователя.
      * @throws UserNotFoundException выбрасывается, если пользователь не найден в таблице user.
-     * @throws IOException выбрасывается, если возникают проблемы при получении картинки.
+     * @throws IOException           выбрасывается, если возникают проблемы при получении картинки.
      */
     @Override
     public void updateUserImage(MultipartFile image, Principal principal) {
-        String username = principal.getName();
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(username));
-        return;
+        try {
+            String username = principal.getName();
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new UserNotFoundException(username));
+            if (user.getImage() != null) {
+                imageService.deleteImage(user.getImage().getId());
+            }
+            Image newImage = imageService.saveImage(image);
+
+            user.setImage(newImage);
+            userRepository.save(user);
+        } catch (IOException e) {
+            throw new ImageSaveException("Failed to save image", e);
+        }
     }
 }

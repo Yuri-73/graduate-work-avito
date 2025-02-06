@@ -12,4 +12,9 @@ public interface ImageService {
     public Integer findImageIdByImagePath(String imagePath);
 
     public String updateAdImage(Integer imageId, MultipartFile image) throws IOException;
+
+    void deleteImage(Integer imageId);
+
+    @org.springframework.transaction.annotation.Transactional
+    Image saveImage(MultipartFile imageFile) throws IOException;
 }

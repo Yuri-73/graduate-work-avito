@@ -28,15 +28,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdServiceImpl implements AdService {
 
-    @Value("${ad.image.path}")
-    private String imagePath;
+//    @Value("${ad.image.path}")
+    String imagePath;
     private AdRepository adRepository;
     private UserRepository userRepository;
     private ImageRepository imageRepository;
     private AdMapper adMapper;
     private ImageService imageService;
 
-
+    public AdServiceImpl(AdRepository adRepository, UserRepository userRepository,
+                         ImageRepository imageRepository, AdMapper adMapper, ImageService imageService,
+                         @Value("${ad.image.path}") String imagePath) {
+        this.imagePath = imagePath;
+        this.adRepository = adRepository;
+        this.userRepository = userRepository;
+        this.imageRepository = imageRepository;
+        this.adMapper = adMapper;
+        this.imageService = imageService;
+    }
 
     @Override
     public AdsDTO getAllAds() {
@@ -60,6 +69,7 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdDTO addAd(CreateOrUpdateAd properties, MultipartFile image, Authentication authentication) throws IOException {
         User user = userRepository.findByUsername(authentication.getName()).orElse(null);
+        System.out.println("user = " +user);
         Image image1 = imageService.uploadAdImage(properties, image);
         Ad ad = adMapper.createOrUpdateAdToAd(properties, user, image1);
         adRepository.save(ad);

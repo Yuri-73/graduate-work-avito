@@ -87,6 +87,6 @@ public class UserController {
     public ResponseEntity updateUserImage(@RequestParam MultipartFile image, Principal principal) {
         LOGGER.info(String.format("Получен запрос для updateUserImage: image = %s, " + "user = %s", image, principal.getName()));
         userService.updateUserImage(image, principal);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
