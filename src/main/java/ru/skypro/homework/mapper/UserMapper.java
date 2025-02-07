@@ -48,7 +48,7 @@ public class UserMapper {
         userDto.setLastName(user.getLastname());
         userDto.setPhone(user.getPhone());
         userDto.setRole(user.getRole());
-        userDto.setImage("src/main/java/ru/skypro/homework/images");
+        userDto.setImage("Заглушка вместо аватара");
 
         return userDto;
     }
