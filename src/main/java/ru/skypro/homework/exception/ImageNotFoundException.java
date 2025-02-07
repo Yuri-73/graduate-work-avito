@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ImageNotFoundException extends RuntimeException {
 
     public ImageNotFoundException(Integer imageId) {
-        super("Image with Id: " + imageId + " not found");
+        super("Картинка: " + imageId + " не найдена");
     }
 
 }

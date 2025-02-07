@@ -100,7 +100,7 @@ public class ImageServiceImpl implements ImageService {
         image1.setImagePath(filePath.toString());
         System.out.println("image1.getImagePath() - " + image1.getImagePath());
         imageRepository.save(image1);
-        image1.setId(findImageIdByImagePath(filePath.toString()));
+//        image1.setId(findImageIdByImagePath(filePath.toString()));
         return image1;
 
     }
