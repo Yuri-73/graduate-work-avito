@@ -93,7 +93,7 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Image saveImage(MultipartFile image) throws IOException {
         createDirectoryAvatar();
-        Path filePath = Path.of(avatarPath, "." + image.getOriginalFilename());
+        Path filePath = Path.of(avatarPath, UUID.randomUUID() + "." + getExtension(image.getOriginalFilename()));
         image.transferTo(filePath);
 
         Image image1 = new Image();
@@ -110,6 +110,10 @@ public class ImageServiceImpl implements ImageService {
         if (Files.notExists(path)) {
             Files.createDirectory(path);
         }
+    }
+
+    private String getExtension(String originalPath) {
+        return originalPath.substring(originalPath.lastIndexOf(".") + 1);
     }
 
 }
