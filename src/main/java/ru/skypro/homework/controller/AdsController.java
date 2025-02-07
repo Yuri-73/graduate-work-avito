@@ -99,8 +99,8 @@ public class AdsController {
     )
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<AdDTO> addAd(@RequestPart CreateOrUpdateAd properties,
-                                       @RequestPart MultipartFile image,
+    public ResponseEntity<AdDTO> addAd(@RequestPart(name = "properties") CreateOrUpdateAd properties,
+                                       @RequestPart(name = "image") MultipartFile image,
                                        Principal principal) throws IOException {
         return ResponseEntity.status(HttpStatus.CREATED).body(adService.addAd(properties, image, principal.getName()));
     }
