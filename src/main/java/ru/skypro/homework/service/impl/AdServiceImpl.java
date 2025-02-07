@@ -1,6 +1,7 @@
 package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import ru.skypro.homework.dto.ad.AdsDTO;
 import ru.skypro.homework.dto.ad.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ad.ExtendedAd;
 import ru.skypro.homework.exception.AdNotFoundException;
+import ru.skypro.homework.exception.UserNotFoundException;
 import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.model.Ad;
 import ru.skypro.homework.model.Image;
@@ -20,32 +22,32 @@ import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.ImageService;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
+@Slf4j
+@Transactional
 @Service
-@RequiredArgsConstructor
 public class AdServiceImpl implements AdService {
 
-//    @Value("${ad.image.path}")
-    String imagePath;
-    private AdRepository adRepository;
-    private UserRepository userRepository;
-    private ImageRepository imageRepository;
-    private AdMapper adMapper;
-    private ImageService imageService;
+    private final AdRepository adRepository;
+    private final UserRepository userRepository;
+    private final ImageRepository imageRepository;
+    private final AdMapper adMapper;
+    private final ImageService imageService;
 
-    public AdServiceImpl(AdRepository adRepository, UserRepository userRepository,
-                         ImageRepository imageRepository, AdMapper adMapper, ImageService imageService,
-                         @Value("${ad.image.path}") String imagePath) {
-        this.imagePath = imagePath;
+    @Value("${ad.image.path}")
+    private String imagePath;
+
+
+    public AdServiceImpl(AdRepository adRepository, UserRepository userRepository, ImageRepository imageRepository, AdMapper adMapper, ImageService imageService) {
         this.adRepository = adRepository;
         this.userRepository = userRepository;
         this.imageRepository = imageRepository;
         this.adMapper = adMapper;
         this.imageService = imageService;
     }
+
 
     @Override
     public AdsDTO getAllAds() {
@@ -67,11 +69,11 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public AdDTO addAd(CreateOrUpdateAd properties, MultipartFile image, Authentication authentication) throws IOException {
-        User user = userRepository.findByUsername(authentication.getName()).orElse(null);
-        System.out.println("user = " +user);
-        Image image1 = imageService.uploadAdImage(properties, image);
-        Ad ad = adMapper.createOrUpdateAdToAd(properties, user, image1);
+    public AdDTO addAd(CreateOrUpdateAd properties, MultipartFile image, String userName) throws IOException {
+        User user = userRepository.findByUsername(userName).orElseThrow(() -> new UserNotFoundException(userName));
+//        Image image1 = imageService.uploadAdImage(properties, image);
+        Image dud = null;
+        Ad ad = adMapper.createOrUpdateAdToAd(properties, user, dud);
         adRepository.save(ad);
         return adMapper.adToAdDto(ad);
     }
@@ -93,7 +95,8 @@ public class AdServiceImpl implements AdService {
             throw new AdNotFoundException(adId);
         }
         Ad ad = adRepository.findById(adId).orElse(null);
-        return imageService.updateAdImage(ad.getImage().getId(), image);
+//        return imageService.updateAdImage(ad.getImage().getId(), image);
+        return null;
     }
 
     @Override

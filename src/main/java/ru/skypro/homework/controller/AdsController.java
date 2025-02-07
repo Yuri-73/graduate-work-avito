@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +22,10 @@ import ru.skypro.homework.dto.ad.AdsDTO;
 import ru.skypro.homework.dto.ad.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ad.ExtendedAd;
 import ru.skypro.homework.service.AdService;
+import ru.skypro.homework.service.impl.AdServiceImpl;
 
 import java.io.IOException;
+import java.security.Principal;
 
 /**
  * @author Yuri-73
@@ -42,7 +45,7 @@ import java.io.IOException;
                 description = "INTERNAL_SERVER_ERROR: Ошибка сервера при обработке запроса")})
 public class AdsController {
 
-    private final AdService adService;
+    private final AdServiceImpl adService;
 
     @Operation(summary = "Получить список всех объявлений")
     @ApiResponse(
@@ -52,7 +55,7 @@ public class AdsController {
                     array = @ArraySchema(schema = @Schema(implementation = AdsDTO.class)))
     )
     @GetMapping
-        public ResponseEntity<?> getAllAds() {
+        public ResponseEntity<AdsDTO> getAllAds() {
         return ResponseEntity.ok(adService.getAllAds());
     }
 
@@ -70,7 +73,7 @@ public class AdsController {
             )
     })
     @GetMapping("/{id}")
-    public ResponseEntity<?> getAds(@PathVariable("id") Integer id) {
+    public ResponseEntity<ExtendedAd> getAds(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(adService.getAd(id));
     }
 
@@ -82,7 +85,7 @@ public class AdsController {
                     array = @ArraySchema(schema = @Schema(implementation = AdsDTO.class)))
     )
     @GetMapping("/me")
-    public ResponseEntity<?> getAdsMe(Authentication authentication) {
+    public ResponseEntity<AdsDTO> getAdsMe(Authentication authentication) {
         return ResponseEntity.ok(adService.getAdsMe(authentication));
     }
 
@@ -94,11 +97,12 @@ public class AdsController {
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = AdDTO.class))
     )
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> addAd(@RequestPart CreateOrUpdateAd properties,
-                                      @RequestParam MultipartFile image, Authentication authentication) throws IOException {
-        System.out.println("authentication = " +authentication.getName());
-        return ResponseEntity.ok(adService.addAd(properties, image, authentication));
+    public ResponseEntity<AdDTO> addAd(@RequestPart CreateOrUpdateAd properties,
+                                       @RequestPart MultipartFile image,
+                                       Principal principal) throws IOException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(adService.addAd(properties, image, principal.getName()));
     }
 
 
@@ -119,8 +123,9 @@ public class AdsController {
                     description = "NOT_FOUND: объявление не найдено"
             )
     })
+    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateAds(@PathVariable Integer id,
+    public ResponseEntity<AdDTO> updateAds(@PathVariable Integer id,
                                       @RequestBody CreateOrUpdateAd ad) {
         return ResponseEntity.ok(adService.updateAd(id, ad));
     }
@@ -140,6 +145,7 @@ public class AdsController {
                             description = "NOT_FOUND: объявление не найдено"
                     )
             })
+    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateImage(@PathVariable("id") Integer id,
                                            @RequestParam("image") MultipartFile image) throws IOException {
@@ -162,9 +168,11 @@ public class AdsController {
                     description = "NOT_FOUND: объявление не найдено"
             )
     })
+
+    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> removeAd(@PathVariable Integer id) {
+    public ResponseEntity<?> removeAd(@PathVariable("id") Integer id) {
         adService.delete(id);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

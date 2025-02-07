@@ -8,7 +8,6 @@ import ru.skypro.homework.dto.ad.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ad.ExtendedAd;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface AdService {
     public AdsDTO getAllAds();
@@ -17,7 +16,7 @@ public interface AdService {
 
     public AdsDTO getAdsMe(Authentication authentication);
 
-    public AdDTO addAd(CreateOrUpdateAd properties, MultipartFile image, Authentication authentication) throws IOException;
+    public AdDTO addAd(CreateOrUpdateAd properties, MultipartFile image, String userName) throws IOException;
 
     public AdDTO updateAd(Integer adId, CreateOrUpdateAd properties);
 
