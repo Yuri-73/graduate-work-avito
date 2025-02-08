@@ -5,11 +5,13 @@ import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CommentsDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 
+import java.security.Principal;
+
 public interface CommentService {
 
     public CommentsDTO getComments(Integer adId);
 
-    public CommentDTO postComment(Integer adId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO);
+    public CommentDTO postComment(Integer adId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO, Principal principal);
 
     public void deleteComment(Integer adId, Integer commentId);
 

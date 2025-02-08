@@ -15,9 +15,9 @@ import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.CommentsRepository;
 import ru.skypro.homework.repository.UserRepository;
-import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.CommentService;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -37,9 +37,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDTO postComment(Integer adId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
+    public CommentDTO postComment(Integer adId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO, Principal principal) {
         Ad ad = adRepository.findById(adId).orElseThrow(()-> new AdNotFoundException(adId));
-        User user = userRepository.findById(ad.getUser().getId()).orElseThrow(()-> new UserNotFoundException(ad.getUser().getUsername()));
+        User user = userRepository.findByUsername(principal.getName()).orElseThrow(()-> new UserNotFoundException(principal.getName()));
         Comment comment = CommentMapper.createComment(createOrUpdateCommentDTO, ad, user);
         commentsRepository.save(comment);
         return CommentMapper.commentToDto(comment);

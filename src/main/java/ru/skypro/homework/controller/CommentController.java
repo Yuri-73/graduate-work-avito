@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.comment.CommentDTO;
@@ -20,6 +21,8 @@ import ru.skypro.homework.dto.comment.CommentsDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.service.CommentService;
 import ru.skypro.homework.service.impl.CommentServiceImpl;
+
+import java.security.Principal;
 
 /**
  * @author Chowo
@@ -88,8 +91,9 @@ public class CommentController {
     })
     @PostMapping("/{id}/comments")
     public ResponseEntity<CommentDTO> postComment(@PathVariable("id") Integer id,
-                                                  @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(commentService.postComment(id, createOrUpdateCommentDTO));
+                                                  @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO,
+                                                  Principal principal) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentService.postComment(id, createOrUpdateCommentDTO, principal));
     }
 
     /**

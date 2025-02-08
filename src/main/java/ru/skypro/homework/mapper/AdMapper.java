@@ -118,7 +118,7 @@ public class AdMapper {
 
         extendedAd.setAuthorFirstName(ad.getUser().getFirstname());
         extendedAd.setAuthorLastName(ad.getUser().getLastname());
-        extendedAd.setEmail(ad.getUser().getPassword());
+        extendedAd.setEmail(ad.getUser().getUsername());
         extendedAd.setPhone(ad.getUser().getPhone());
 
         return extendedAd;
