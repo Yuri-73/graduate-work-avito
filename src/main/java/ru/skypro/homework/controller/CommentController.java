@@ -123,7 +123,7 @@ public class CommentController {
                     content = @Content
             )
     })
-    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
+//    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
     @DeleteMapping("/{id}/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable("id") Integer id,
                                            @PathVariable("commentId") Integer commentId) {
@@ -154,7 +154,7 @@ public class CommentController {
                     content = @Content
             )
     })
-    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
+//    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
     @PatchMapping("/{id}/comments/{commentId}")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable("id") Integer id,
                                                     @PathVariable("commentId") Integer commentId,
