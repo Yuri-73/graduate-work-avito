@@ -20,6 +20,7 @@ import ru.skypro.homework.service.UserService;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setPassword(NewPassword newPassword, Principal principal) {
         String username = principal.getName();
-        User user = userRepository.findByUsername(username)
+        User user = findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
         if (!encoder.matches(newPassword.getCurrentPassword(), user.getPassword())) {
             throw new IncorrectPasswordException(username);
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUser(Principal principal) {
         String username = principal.getName();
-        User user = userRepository.findByUsername(username)
+        User user = findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
         return userMapper.userToUserDto(user);
     }
@@ -79,7 +80,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UpdateUserDTO updateUser(UpdateUserDTO updateUserDTO, Principal principal) {
         String username = principal.getName();
-        User user = userRepository.findByUsername(username)
+        User user = findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
         user.setFirstname(updateUserDTO.getFirstName());
         user.setLastname(updateUserDTO.getLastName());
@@ -100,7 +101,7 @@ public class UserServiceImpl implements UserService {
     public void updateUserImage(MultipartFile image, Principal principal) {
         try {
             String username = principal.getName();
-            User user = userRepository.findByUsername(username)
+            User user = findByUsername(username)
                     .orElseThrow(() -> new UserNotFoundException(username));
             if (user.getImage() != null) {
                 imageService.deleteImage(user.getImage().getId());
@@ -112,5 +113,15 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e) {
             throw new ImageSaveException("Failed to save image", e);
         }
+    }
+
+    /**
+     * Метод для поиска пользователя в таблице user по username.
+     *
+     * @param username username пользователя.
+     * @return Optional объект класса User.
+     */
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

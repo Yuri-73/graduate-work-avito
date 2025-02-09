@@ -37,8 +37,7 @@ import static org.hibernate.tool.schema.SchemaToolingLogging.LOGGER;
 @Tag(name = "Пользователи", description = "Управление данными пользователей")
 @ApiResponses(value = {
         @ApiResponse(responseCode = "401", description = "UNAUTHORIZED: пользователь не авторизован"),
-        @ApiResponse(responseCode = "403", description = "FORBIDDEN: нет доступа"),
-        @ApiResponse(responseCode = "500", description = "INTERNAL_SERVER_ERROR: ошибка сервера при обработке запроса")})
+        @ApiResponse(responseCode = "403", description = "FORBIDDEN: нет доступа")})
 public class UserController {
 
     private final UserServiceImpl userService;
@@ -48,7 +47,7 @@ public class UserController {
             responseCode = "200", description = "OK: пароль изменен")
     @PostMapping("/set_password")
     public ResponseEntity setPassword(@RequestBody NewPassword newPassword, Principal principal) {
-        LOGGER.info(String.format("Получен запрос для setPassword: newPassword = %s, " + "user = %s", newPassword, principal.getName()));
+        log.info(String.format("Получен запрос для setPassword: newPassword = %s, " + "user = %s", newPassword, principal.getName()));
         userService.setPassword(newPassword, principal);
         return ResponseEntity.ok().build();
     }

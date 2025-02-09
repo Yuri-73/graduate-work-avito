@@ -8,4 +8,7 @@ public class CommentsNotFoundException extends RuntimeException {
     public CommentsNotFoundException(Integer adId) {
         super("Comments for ad with Id: " + adId + " not found");
     }
+    public CommentsNotFoundException() {
+        super("Comments for not found");
+    }
 }

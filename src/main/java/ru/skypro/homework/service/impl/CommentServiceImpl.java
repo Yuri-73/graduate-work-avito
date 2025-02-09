@@ -17,10 +17,12 @@ import ru.skypro.homework.repository.CommentsRepository;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.CommentService;
 
+import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
@@ -47,7 +49,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteComment(Integer adId, Integer commentId) {
-//        commentsRepository.deleteComment(adId, commentId);
         commentsRepository.deleteById(commentId);
     }
 
@@ -57,5 +58,9 @@ public class CommentServiceImpl implements CommentService {
         comment.setText(createOrUpdateCommentDTO.getText());
         commentsRepository.save(comment);
         return CommentMapper.commentToDto(comment);
+    }
+
+    public String getCommentUserName(Integer commentId) {
+        return commentsRepository.findById(commentId).orElseThrow(CommentsNotFoundException::new).getAuthor().getUsername();
     }
 }

@@ -17,8 +17,6 @@ import java.util.Optional;
 @Repository
 public interface AdRepository extends JpaRepository<Ad, Integer> {
 
-    @Transactional
-    @Query (value = "SELECT * FROM ads WHERE user_id = ?1 ", nativeQuery = true)
     Optional<List<Ad>> findAllByUserId(@Param("userId") Integer userId);
 
 }

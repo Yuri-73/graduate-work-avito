@@ -21,6 +21,7 @@ import ru.skypro.homework.dto.comment.CommentsDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.service.CommentService;
 import ru.skypro.homework.service.impl.CommentServiceImpl;
+import ru.skypro.homework.service.impl.UserServiceImpl;
 
 import java.security.Principal;
 
@@ -38,6 +39,7 @@ import java.security.Principal;
 public class CommentController {
 
     private final CommentServiceImpl commentService;
+    private final UserServiceImpl userService;
 
     /**
      * Метод для получения всех комментариев объявления
@@ -123,7 +125,7 @@ public class CommentController {
                     content = @Content
             )
     })
-//    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
+    @PreAuthorize("hasRole('ADMIN') or @commentServiceImpl.getCommentUserName(#commentId) == authentication.principal.username")
     @DeleteMapping("/{id}/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable("id") Integer id,
                                            @PathVariable("commentId") Integer commentId) {
@@ -154,7 +156,7 @@ public class CommentController {
                     content = @Content
             )
     })
-//    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
+    @PreAuthorize("hasRole('ADMIN') or @commentServiceImpl.getCommentUserName(#commentId) == authentication.principal.username")
     @PatchMapping("/{id}/comments/{commentId}")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable("id") Integer id,
                                                     @PathVariable("commentId") Integer commentId,

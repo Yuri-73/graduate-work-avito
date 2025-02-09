@@ -73,7 +73,7 @@ public class AdServiceImpl implements AdService {
         User user = userRepository.findByUsername(userName).orElseThrow(() -> new UserNotFoundException(userName));
 //        Image image1 = imageService.uploadAdImage(properties, image);
         Image dud = null;
-        Ad ad = adMapper.createOrUpdateAdToAd(properties, user, dud);
+        Ad ad = adMapper.createAd(properties, user, dud);
         adRepository.save(ad);
         return adMapper.adToAdDto(ad);
     }
@@ -84,9 +84,11 @@ public class AdServiceImpl implements AdService {
             throw new AdNotFoundException(adId);
         }
         Ad ad = adRepository.findById(adId).orElse(null);
-        Ad newAd = adMapper.createOrUpdateAdToAd(ad, properties);
-        adRepository.save(newAd);
-        return adMapper.adToAdDto(newAd);
+        ad.setTitle(properties.getTitle());
+        ad.setPrice(properties.getPrice());
+        ad.setDescription(properties.getDescription());
+        adRepository.save(ad);
+        return adMapper.adToAdDto(ad);
     }
 
     @Override
@@ -106,5 +108,9 @@ public class AdServiceImpl implements AdService {
         }
 
         adRepository.deleteById(adId);
+    }
+
+    public String getAdUserName(Integer adId) {
+        return adRepository.findById(adId).orElseThrow(()->new AdNotFoundException(adId)).getUser().getUsername();
     }
 }

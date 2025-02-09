@@ -30,7 +30,7 @@ public class AdMapper {
      * @param createOrUpdateAd Dto, user, image.
      * @return объект класса Ad.
      */
-    public Ad createOrUpdateAdToAd(CreateOrUpdateAd createOrUpdateAd, User user, Image image) {
+    public Ad createAd(CreateOrUpdateAd createOrUpdateAd, User user, Image image) {
         if (createOrUpdateAd == null) {
             throw new IllegalArgumentException("Попытка конвертировать createOrUpdateAd == null");
         }
@@ -45,40 +45,7 @@ public class AdMapper {
         return newAd;
     }
 
-//    public Ad toEntity(AdDtoIn adDtoIn, Principal principal) {
-//        Ad ad = new Ad();
-//        String username = principal.getName();
-//        User user = userRepository.findByUsername(username)
-//                .orElseThrow(() -> new UserNotFoundException(username));
-//        ad.setUser(user);
-//        ad.setTitle(adDtoIn.getTitle());
-//        ad.setPrice(adDtoIn.getPrice());
-//        ad.setDescription(adDtoIn.getDescription());
-//        return ad;
-//    }
 
-
-
-    /**
-     * Метод преобразует Dto CreateOrUpdateAd в объект класса Ad.
-     * @param ad, createOrUpdateAd Dto, user, image.
-     * @return объект класса Ad.
-     */
-    public Ad createOrUpdateAdToAd(Ad ad, CreateOrUpdateAd createOrUpdateAd) {
-        if (createOrUpdateAd == null) {
-            throw new IllegalArgumentException("Попытка конвертировать createOrUpdateAd == null");
-        }
-        Ad newAd = new Ad();
-
-        newAd.setTitle(createOrUpdateAd.getTitle());
-        newAd.setPrice(createOrUpdateAd.getPrice());
-        newAd.setDescription(createOrUpdateAd.getDescription());
-        newAd.setUser(ad.getUser());
-//        newAd.setImage(ad.getImage());
-        newAd.setId(ad.getId());
-
-        return newAd;
-    }
 
     /**
      * Метод преобразует объект класса Ad в Dto AdDTO.
@@ -128,7 +95,10 @@ public class AdMapper {
     public AdsDTO adsToAdsDto(List<Ad> ads) {
         AdsDTO adsDTO = new AdsDTO();
         adsDTO.setCount(ads.size());
-        adsDTO.setResults(ads.stream().map(this::adToAdDto).collect(Collectors.toList()));
+        adsDTO.setResults(ads
+                .stream()
+                .map(this::adToAdDto)
+                .collect(Collectors.toList()));
         return adsDTO;
     }
 

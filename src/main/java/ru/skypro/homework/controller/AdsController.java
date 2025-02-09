@@ -40,9 +40,7 @@ import java.security.Principal;
 @Tag(name = "Объявления", description = "Интерфейс для управления объявлениями о продаже")
 @ApiResponses(value = {
         @ApiResponse(responseCode = "401",
-                description = "UNAUTHORIZED: пользователь не авторизован"),
-        @ApiResponse(responseCode = "500",
-                description = "INTERNAL_SERVER_ERROR: Ошибка сервера при обработке запроса")})
+                description = "UNAUTHORIZED: пользователь не авторизован")})
 public class AdsController {
 
     private final AdServiceImpl adService;
@@ -123,7 +121,7 @@ public class AdsController {
                     description = "NOT_FOUND: объявление не найдено"
             )
     })
-//    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
+    @PreAuthorize("hasRole('ADMIN') or @adServiceImpl.getAdUserName(#id) == authentication.principal.username")
     @PatchMapping("/{id}")
     public ResponseEntity<AdDTO> updateAds(@PathVariable Integer id,
                                       @RequestBody CreateOrUpdateAd ad) {
@@ -145,7 +143,7 @@ public class AdsController {
                             description = "NOT_FOUND: объявление не найдено"
                     )
             })
-//    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
+    @PreAuthorize("hasRole('ADMIN') or @adServiceImpl.getAdUserName(#id) == authentication.principal.username")
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateImage(@PathVariable("id") Integer id,
                                            @RequestParam("image") MultipartFile image) throws IOException {
@@ -169,7 +167,7 @@ public class AdsController {
             )
     })
 
-//    @PreAuthorize("hasRole('ADMIN') or #adServiceImpl.getAd(#id).user.email == authentication.principal.username")
+    @PreAuthorize("hasRole('ADMIN') or @adServiceImpl.getAdUserName(#id) == authentication.principal.username")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeAd(@PathVariable("id") Integer id) {
         adService.delete(id);

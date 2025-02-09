@@ -3,6 +3,7 @@ package ru.skypro.homework.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +17,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 // В этом коде настраиваются правила доступа к различным URL-адресам и методам,
 // а также используется шифрование паролей.
 @Configuration //Аннотация @Configuration указывает, что данный класс является конфигурационным классом Spring.
-@EnableGlobalMethodSecurity(prePostEnabled = true) //Аннотация @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity //Аннотация @EnableGlobalMethodSecurity(prePostEnabled = true)
 // включает использование аннотаций Spring Security для аннотирования методов с разрешениями доступа.
 public class WebSecurityConfig {
     // массив строк auth_whitelist, который содержит список URL-адресов.
