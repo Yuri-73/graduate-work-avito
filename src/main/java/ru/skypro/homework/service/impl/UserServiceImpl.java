@@ -18,13 +18,14 @@ import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
-
+@Transactional
 @Service
 public class UserServiceImpl implements UserService {
 

@@ -22,7 +22,6 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-
 @Transactional
 public class ImageServiceImpl implements ImageService {
 
