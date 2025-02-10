@@ -21,7 +21,6 @@ import ru.skypro.homework.dto.ad.AdDTO;
 import ru.skypro.homework.dto.ad.AdsDTO;
 import ru.skypro.homework.dto.ad.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ad.ExtendedAd;
-import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.impl.AdServiceImpl;
 
 import java.io.IOException;
@@ -53,7 +52,7 @@ public class AdsController {
                     array = @ArraySchema(schema = @Schema(implementation = AdsDTO.class)))
     )
     @GetMapping
-        public ResponseEntity<AdsDTO> getAllAds() {
+    public ResponseEntity<AdsDTO> getAllAds() {
         return ResponseEntity.ok(adService.getAllAds());
     }
 
@@ -124,7 +123,7 @@ public class AdsController {
     @PreAuthorize("hasRole('ADMIN') or @adServiceImpl.getAdUserName(#id) == authentication.principal.username")
     @PatchMapping("/{id}")
     public ResponseEntity<AdDTO> updateAds(@PathVariable Integer id,
-                                      @RequestBody CreateOrUpdateAd ad) {
+                                           @RequestBody CreateOrUpdateAd ad) {
         return ResponseEntity.ok(adService.updateAd(id, ad));
     }
 
@@ -146,7 +145,7 @@ public class AdsController {
     @PreAuthorize("hasRole('ADMIN') or @adServiceImpl.getAdUserName(#id) == authentication.principal.username")
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateImage(@PathVariable("id") Integer id,
-                                           @RequestParam("image") MultipartFile image) throws IOException {
+                                         @RequestParam("image") MultipartFile image) throws IOException {
         return ResponseEntity.ok(adService.updateImage(id, image));
     }
 
@@ -173,4 +172,5 @@ public class AdsController {
         adService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

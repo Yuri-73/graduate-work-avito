@@ -6,13 +6,11 @@ import ru.skypro.homework.dto.ad.AdDTO;
 import ru.skypro.homework.dto.ad.AdsDTO;
 import ru.skypro.homework.dto.ad.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ad.ExtendedAd;
-import ru.skypro.homework.exception.UserNotFoundException;
 import ru.skypro.homework.model.Ad;
 import ru.skypro.homework.model.Image;
 import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.UserRepository;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +25,7 @@ public class AdMapper {
 
     /**
      * Метод преобразует Dto CreateOrUpdateAd в объект класса Ad.
+     *
      * @param createOrUpdateAd Dto, user, image.
      * @return объект класса Ad.
      */
@@ -40,15 +39,15 @@ public class AdMapper {
         newAd.setPrice(createOrUpdateAd.getPrice());
         newAd.setDescription(createOrUpdateAd.getDescription());
         newAd.setUser(user);
-//        newAd.setImage(image);
+        newAd.setImage(image);
 
         return newAd;
     }
 
 
-
     /**
      * Метод преобразует объект класса Ad в Dto AdDTO.
+     *
      * @param ad объект класса Ad.
      * @return Dto AdDTO.
      */
@@ -61,13 +60,14 @@ public class AdMapper {
         adDTO.setPk(ad.getId());
         adDTO.setTitle(ad.getTitle());
         adDTO.setPrice(ad.getPrice());
-//        adDTO.setImage(ad.getImage().getImagePath());
+        adDTO.setImage("/images/" + ad.getImage().getId());
         adDTO.setAuthor(ad.getUser().getId());
         return adDTO;
     }
 
     /**
      * Метод преобразует объект класса Ad в Dto ExtendedAd.
+     *
      * @param ad объект класса Ad.
      * @return Dto ExtendedAd.
      */
@@ -81,7 +81,7 @@ public class AdMapper {
         extendedAd.setTitle(ad.getTitle());
         extendedAd.setPrice(ad.getPrice());
         extendedAd.setDescription(ad.getDescription());
-//        extendedAd.setImage(ad.getImage().getImagePath());
+        extendedAd.setImage("/images/" + ad.getImage().getId());
 
         extendedAd.setAuthorFirstName(ad.getUser().getFirstname());
         extendedAd.setAuthorLastName(ad.getUser().getLastname());

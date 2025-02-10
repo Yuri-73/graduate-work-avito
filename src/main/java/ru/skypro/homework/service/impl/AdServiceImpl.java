@@ -1,8 +1,6 @@
 package ru.skypro.homework.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +15,6 @@ import ru.skypro.homework.model.Ad;
 import ru.skypro.homework.model.Image;
 import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.AdRepository;
-import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.ImageService;
@@ -32,18 +29,13 @@ public class AdServiceImpl implements AdService {
 
     private final AdRepository adRepository;
     private final UserRepository userRepository;
-    private final ImageRepository imageRepository;
     private final AdMapper adMapper;
     private final ImageService imageService;
 
-    @Value("${ad.image.path}")
-    private String imagePath;
 
-
-    public AdServiceImpl(AdRepository adRepository, UserRepository userRepository, ImageRepository imageRepository, AdMapper adMapper, ImageService imageService) {
+    public AdServiceImpl(AdRepository adRepository, UserRepository userRepository, AdMapper adMapper, ImageService imageService) {
         this.adRepository = adRepository;
         this.userRepository = userRepository;
-        this.imageRepository = imageRepository;
         this.adMapper = adMapper;
         this.imageService = imageService;
     }
@@ -71,9 +63,8 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdDTO addAd(CreateOrUpdateAd properties, MultipartFile image, String userName) throws IOException {
         User user = userRepository.findByUsername(userName).orElseThrow(() -> new UserNotFoundException(userName));
-//        Image image1 = imageService.uploadAdImage(properties, image);
-        Image dud = null;
-        Ad ad = adMapper.createAd(properties, user, dud);
+        Image image1 = imageService.uploadAdImage(properties, image);
+        Ad ad = adMapper.createAd(properties, user, image1);
         adRepository.save(ad);
         return adMapper.adToAdDto(ad);
     }
@@ -97,8 +88,7 @@ public class AdServiceImpl implements AdService {
             throw new AdNotFoundException(adId);
         }
         Ad ad = adRepository.findById(adId).orElse(null);
-//        return imageService.updateAdImage(ad.getImage().getId(), image);
-        return null;
+        return imageService.updateAdImage(ad.getImage().getId(), image);
     }
 
     @Override
@@ -111,6 +101,6 @@ public class AdServiceImpl implements AdService {
     }
 
     public String getAdUserName(Integer adId) {
-        return adRepository.findById(adId).orElseThrow(()->new AdNotFoundException(adId)).getUser().getUsername();
+        return adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException(adId)).getUser().getUsername();
     }
 }

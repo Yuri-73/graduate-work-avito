@@ -7,17 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.ad.CreateOrUpdateAd;
 import ru.skypro.homework.exception.ImageNotFoundException;
-import ru.skypro.homework.exception.ImageSaveException;
 import ru.skypro.homework.model.Image;
 import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.service.ImageService;
 
 import javax.transaction.Transactional;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -49,7 +46,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Integer findImageIdByImagePath(String imagePath) {
-        return imageRepository.findIdByImagePath(imagePath).orElse(-1);
+        return imageRepository.findByImagePath(imagePath).orElseThrow(ImageNotFoundException::new).getId();
     }
 
     @Override
@@ -57,8 +54,9 @@ public class ImageServiceImpl implements ImageService {
         if (!imageRepository.existsById(imageId)) {
             throw new ImageNotFoundException(imageId);
         }
-        Image image1 = imageRepository.findById(imageId).orElse(null);
+        Image image1 = imageRepository.findById(imageId).orElseThrow(() -> new ImageNotFoundException(imageId));
         Path filePath = Path.of(image1.getImagePath());
+        Files.deleteIfExists(filePath);
         image.transferTo(filePath);
 
 
@@ -113,6 +111,11 @@ public class ImageServiceImpl implements ImageService {
 
     private String getExtension(String originalPath) {
         return originalPath.substring(originalPath.lastIndexOf(".") + 1);
+    }
+
+    public byte[] getImageBytes(Integer id) throws IOException {
+        Path imagePath = Path.of(imageRepository.findById(id).orElseThrow(() -> new ImageNotFoundException(id)).getImagePath());
+        return Files.readAllBytes(imagePath);
     }
 
 }

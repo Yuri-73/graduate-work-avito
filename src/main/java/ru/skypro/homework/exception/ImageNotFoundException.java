@@ -10,4 +10,8 @@ public class ImageNotFoundException extends RuntimeException {
         super("Картинка: " + imageId + " не найдена");
     }
 
+    public ImageNotFoundException() {
+        super("Картинка не найдена");
+    }
+
 }
