@@ -42,7 +42,7 @@ public class Ad {
     @OneToMany(mappedBy = "ad", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "ad_image_id", referencedColumnName = "id")
     private Image image;
 }
