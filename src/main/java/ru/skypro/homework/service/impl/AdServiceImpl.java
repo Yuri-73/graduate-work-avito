@@ -88,6 +88,10 @@ public class AdServiceImpl implements AdService {
             throw new AdNotFoundException(adId);
         }
         Ad ad = adRepository.findById(adId).orElse(null);
+        if (ad.getImage() != null) {
+            imageService.deleteImage(ad.getImage().getId());
+        }
+
         return imageService.updateAdImage(ad.getImage().getId(), image);
     }
 
