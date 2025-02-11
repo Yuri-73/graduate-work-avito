@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.Principal;
 import java.util.UUID;
 
 @Service
@@ -88,18 +89,15 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image saveImage(MultipartFile image) throws IOException {
+    public Image saveImage(MultipartFile image, Principal principal) throws IOException {
         createDirectoryAvatar();
-        Path filePath = Path.of(avatarPath, UUID.randomUUID() + "." + getExtension(image.getOriginalFilename()));
+        Path filePath = Path.of(avatarPath, principal.getName() + "." + getExtension(image.getOriginalFilename()));
         image.transferTo(filePath);
 
         Image image1 = new Image();
         image1.setImagePath(filePath.toString());
-        System.out.println("image1.getImagePath() - " + image1.getImagePath());
         imageRepository.save(image1);
-//        image1.setId(findImageIdByImagePath(filePath.toString()));
         return image1;
-
     }
 
     private void createDirectoryAvatar() throws IOException {
@@ -114,7 +112,9 @@ public class ImageServiceImpl implements ImageService {
     }
 
     public byte[] getImageBytes(Integer id) throws IOException {
+        System.out.println("id = " +id);
         Path imagePath = Path.of(imageRepository.findById(id).orElseThrow(() -> new ImageNotFoundException(id)).getImagePath());
+        System.out.println("imagePath.toString() - " +imagePath.toString());
         return Files.readAllBytes(imagePath);
     }
 

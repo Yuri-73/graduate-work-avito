@@ -5,6 +5,7 @@ import ru.skypro.homework.dto.ad.CreateOrUpdateAd;
 import ru.skypro.homework.model.Image;
 
 import java.io.IOException;
+import java.security.Principal;
 
 public interface ImageService {
     public Image uploadAdImage(CreateOrUpdateAd properties, MultipartFile image) throws IOException;
@@ -16,5 +17,5 @@ public interface ImageService {
     void deleteImage(Integer imageId);
 
     @org.springframework.transaction.annotation.Transactional
-    Image saveImage(MultipartFile imageFile) throws IOException;
+    Image saveImage(MultipartFile imageFile, Principal principal) throws IOException;
 }

@@ -24,12 +24,13 @@ public class CommentMapper {
             throw new IllegalArgumentException("Попытка конвертировать comment == null");
         }
         Integer author = comment.getAuthor().getId();
-//        String authorImage = comment.getAuthor().getImage().getImagePath();
+        String authorImage = "/images/" + comment.getAuthor().getImage().getId();
+
         String authorFirstName = comment.getAuthor().getFirstname();
         LocalDateTime createdAt = comment.getCreatedAt();
         Integer pk = comment.getPk();
         String text = comment.getText();
-        return new CommentDTO(author, null, authorFirstName, createdAt, pk, text);
+        return new CommentDTO(author, authorImage, authorFirstName, createdAt, pk, text);
     }
 
     public static Comment commentDtoToComment(CommentDTO commentDTO) {
