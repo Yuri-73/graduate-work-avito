@@ -93,10 +93,10 @@ public class UserServiceImpl implements UserService {
     /**
      * Метод для изменения аватарки пользователя.
      *
-     * @param image картинка с аватаркой.
+     * @param image аватарка.
      * @param principal интерфейс для получения username пользователя.
      * @throws UserNotFoundException выбрасывается, если пользователь не найден в таблице user.
-     * @throws IOException           выбрасывается, если возникают проблемы при получении картинки.
+     * @throws IOException выбрасывается, если возникают проблемы при получении картинки.
      */
     @Override
     public void updateUserImage(MultipartFile image, Principal principal) {
@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
             if (user.getImage() != null) {
                 imageService.deleteImage(user.getImage().getId());
             }
-            Image newImage = imageService.saveImage(image);
+            Image newImage = imageService.saveImage(image, principal);
 
             user.setImage(newImage);
             userRepository.save(user);
