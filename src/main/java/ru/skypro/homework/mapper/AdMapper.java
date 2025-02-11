@@ -21,8 +21,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdMapper {
 
-    private final UserRepository userRepository;
-
     /**
      * Метод преобразует Dto CreateOrUpdateAd в объект класса Ad.
      *
@@ -43,7 +41,6 @@ public class AdMapper {
 
         return newAd;
     }
-
 
     /**
      * Метод преобразует объект класса Ad в Dto AdDTO.
@@ -91,7 +88,6 @@ public class AdMapper {
         return extendedAd;
     }
 
-
     public AdsDTO adsToAdsDto(List<Ad> ads) {
         AdsDTO adsDTO = new AdsDTO();
         adsDTO.setCount(ads.size());
@@ -101,7 +97,5 @@ public class AdMapper {
                 .collect(Collectors.toList()));
         return adsDTO;
     }
-
-
 }
 
