@@ -91,7 +91,10 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Image saveImage(MultipartFile image, Principal principal) throws IOException {
         createDirectoryAvatar();
-        Path filePath = Path.of(avatarPath, principal.getName() + "." + getExtension(image.getOriginalFilename()));
+        Path filePath = Path.of(avatarPath, principal.getName()
+                .substring(0, principal.getName()
+                .lastIndexOf("@")) + "." + getExtension(image.getOriginalFilename()));
+
         image.transferTo(filePath);
 
         Image image1 = new Image();
