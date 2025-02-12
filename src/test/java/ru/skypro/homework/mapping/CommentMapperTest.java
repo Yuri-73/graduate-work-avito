@@ -1,6 +1,6 @@
+package ru.skypro.homework.mapping;
 
-package ru.skypro.homework.mapper;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
@@ -9,6 +9,7 @@ import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CommentsDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
+import ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.model.Ad;
 import ru.skypro.homework.model.Comment;
 import ru.skypro.homework.model.Image;
@@ -25,21 +26,26 @@ public class CommentMapperTest {
     @Spy
     private CommentMapper commentMapper;
 
-    @Test
-    public void commentToDtoTest() {
-        User user = new User();
+    private User user;
+    private Image image;
+
+    @BeforeEach
+    public void beforeEach() {
+        user = new User();
         user.setId(1);
         user.setUsername("username");
+        user.setPassword("encodedPassword");
         user.setFirstname("Ivan");
         user.setLastname("Ivanov");
         user.setPhone("+7852-123-45-67");
         user.setRole(Role.USER);
 
-        Image image = new Image();
-        image.setImagePath("/avatar");
-        image.setId(1);
+        image = new Image();
         user.setImage(image);
+    }
 
+    @Test
+    public void commentToDtoTest() {
         Ad ad = new Ad();
         ad.setTitle(" ");
         ad.setPrice(100);
@@ -68,7 +74,6 @@ public class CommentMapperTest {
     @Test
     public void comment_Null_ToDtoTest() {
         Comment comment = null;
-
         CommentDTO commentDTO = new CommentDTO();
 
         org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> commentMapper.commentToDto(comment));
@@ -76,19 +81,6 @@ public class CommentMapperTest {
 
     @Test
     public void commentDtoToCommentTest() {
-        User user = new User();
-        user.setId(1);
-        user.setUsername("username");
-        user.setFirstname("Ivan");
-        user.setLastname("Ivanov");
-        user.setPhone("+7852-123-45-67");
-        user.setRole(Role.USER);
-
-        Image image = new Image();
-        image.setImagePath("/avatar");
-        image.setId(1);
-        user.setImage(image);
-
         Ad ad = new Ad();
         ad.setTitle(" ");
         ad.setPrice(100);
@@ -126,20 +118,6 @@ public class CommentMapperTest {
 
     @Test
     public void toCommentsDTOTest() {
-
-        User user = new User();
-        user.setId(1);
-        user.setUsername("username");
-        user.setFirstname("Ivan");
-        user.setLastname("Ivanov");
-        user.setPhone("+7852-123-45-67");
-        user.setRole(Role.USER);
-
-        Image image = new Image();
-        image.setImagePath("/avatar");
-        image.setId(1);
-        user.setImage(image);
-
         Ad ad = new Ad();
         ad.setTitle(" ");
         ad.setPrice(100);
@@ -165,19 +143,6 @@ public class CommentMapperTest {
 
     @Test
     public void createCommentTest() {
-        User user = new User();
-        user.setId(1);
-        user.setUsername("username");
-        user.setFirstname("Ivan");
-        user.setLastname("Ivanov");
-        user.setPhone("+7852-123-45-67");
-        user.setRole(Role.USER);
-
-        Image image = new Image();
-        image.setImagePath("/avatar");
-        image.setId(1);
-        user.setImage(image);
-
         Ad ad = new Ad();
         ad.setTitle(" ");
         ad.setPrice(100);
@@ -201,19 +166,6 @@ public class CommentMapperTest {
 
     @Test
     public void createComment_Null_Test() {
-        User user = new User();
-        user.setId(1);
-        user.setUsername("username");
-        user.setFirstname("Ivan");
-        user.setLastname("Ivanov");
-        user.setPhone("+7852-123-45-67");
-        user.setRole(Role.USER);
-
-        Image image = new Image();
-        image.setImagePath("/avatar");
-        image.setId(1);
-        user.setImage(image);
-
         Ad ad = new Ad();
         ad.setTitle(" ");
         ad.setPrice(100);

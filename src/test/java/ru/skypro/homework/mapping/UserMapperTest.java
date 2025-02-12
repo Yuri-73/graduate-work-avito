@@ -1,6 +1,7 @@
-package ru.skypro.homework.mapper;
+package ru.skypro.homework.mapping;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
@@ -9,6 +10,7 @@ import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.dto.user.Register;
 import ru.skypro.homework.dto.user.UpdateUserDTO;
 import ru.skypro.homework.dto.user.UserDTO;
+import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.model.Image;
 import ru.skypro.homework.model.User;
 
@@ -19,6 +21,24 @@ public class UserMapperTest {
 
     @Spy
     private UserMapper userMapper;
+
+    private User user;
+    private Image image;
+
+    @BeforeEach
+    public void beforeEach() {
+        user = new User();
+        user.setId(1);
+        user.setUsername("username");
+        user.setPassword("encodedPassword");
+        user.setFirstname("Ivan");
+        user.setLastname("Ivanov");
+        user.setPhone("+7852-123-45-67");
+        user.setRole(Role.USER);
+
+        image = new Image();
+        user.setImage(image);
+    }
 
     @Test
     public void registerToUserTest() {
@@ -31,32 +51,14 @@ public class UserMapperTest {
         register.setPhone("+7852-123-45-67");
         register.setRole(Role.USER);
 
-        User user = new User();
-        user.setUsername("username");
-        user.setPassword("password");
-        user.setFirstname("Ivan");
-        user.setLastname("Ivanov");
-        user.setPhone("+7852-123-45-67");
-        user.setRole(Role.USER);
-
         assertThat(userMapper.registerToUser(register)).isEqualTo(user);
 
-        Assertions.assertThat(user.getId()).isNull();
-        Assertions.assertThat(user.getImage()).isNull();
         Assertions.assertThat(user.getAds()).isNull();
         Assertions.assertThat(user.getCommentsList()).isNull();
     }
 
     @Test
     public void register_Null_ToUserTest() {
-        User user = new User();
-        user.setUsername("username");
-        user.setPassword("password");
-        user.setFirstname("Ivan");
-        user.setLastname("Ivanov");
-        user.setPhone("+7852-123-45-67");
-        user.setRole(Role.USER);
-
         Register register = null;
 
         org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> userMapper.registerToUser(register));
@@ -64,19 +66,6 @@ public class UserMapperTest {
 
     @Test
     public void userToUserDTOTest() {
-        User user = new User();
-        user.setId(1);
-        user.setUsername("username");
-        user.setPassword("password");
-        user.setFirstname("Ivan");
-        user.setLastname("Ivanov");
-        user.setPhone("+7852-123-45-67");
-        user.setRole(Role.USER);
-        Image image = new Image();
-        image.setId(1);
-        image.setImagePath("/images/1");
-        user.setImage(image);
-
         UserDTO userDTO = new UserDTO();
         userDTO.setId(1);
         userDTO.setEmail("username");
@@ -92,7 +81,7 @@ public class UserMapperTest {
         Assertions.assertThat(userDTO.getLastName()).isEqualTo(user.getLastname());
         Assertions.assertThat(userDTO.getPhone()).isEqualTo(user.getPhone());
         Assertions.assertThat(userDTO.getRole()).isEqualTo(user.getRole());
-        Assertions.assertThat(userDTO.getImage()).isEqualTo(user.getImage().getImagePath());
+        Assertions.assertThat(userDTO.getImage()).isEqualTo("/images/" + user.getImage().getId());
 
         assertThat(userMapper.userToUserDto(user)).isEqualTo(userDTO);
     }
@@ -115,18 +104,6 @@ public class UserMapperTest {
 
     @Test
     public void userToUpdateUserDtoTest() {
-        User user = new User();
-        user.setId(1);
-        user.setUsername("username");
-        user.setPassword("password");
-        user.setFirstname("Ivan");
-        user.setLastname("Ivanov");
-        user.setPhone("+7852-123-45-67");
-        user.setRole(Role.USER);
-        Image image = new Image();
-        image.setImagePath("/users/me/image");
-        user.setImage(image);
-
         UpdateUserDTO updateUserDTO = new UpdateUserDTO();
         updateUserDTO.setFirstName("Ivan");
         updateUserDTO.setLastName("Ivanov");
