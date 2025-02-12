@@ -2,6 +2,8 @@ package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +25,11 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Optional;
 
+/**
+ * {@link Класс} UserServiceImpl реализации логики работы с пользователями <br>
+ *
+ * @author Yuri-73
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
@@ -33,6 +40,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
     private final ImageService imageService;
+
+    private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     /**
      * Метод для смены пароля пользователя.
@@ -45,6 +54,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void setPassword(NewPassword newPassword, Principal principal) {
+        logger.info("UserService setPassword is running");
         String username = principal.getName();
         User user = findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
@@ -64,6 +74,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDTO getUser(Principal principal) {
+        logger.info("UserService getUser is running");
         String username = principal.getName();
         User user = findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
@@ -80,6 +91,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UpdateUserDTO updateUser(UpdateUserDTO updateUserDTO, Principal principal) {
+        logger.info("UserService updateUser is running");
         String username = principal.getName();
         User user = findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
@@ -100,6 +112,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void updateUserImage(MultipartFile image, Principal principal) {
+        logger.info("UserService updateUserImage is running");
         try {
             String username = principal.getName();
             User user = findByUsername(username)
@@ -123,6 +136,7 @@ public class UserServiceImpl implements UserService {
      * @return Optional объект класса User.
      */
     public Optional<User> findByUsername(String username) {
+        logger.info("UserService findByUsername is running");
         return userRepository.findByUsername(username);
     }
 }

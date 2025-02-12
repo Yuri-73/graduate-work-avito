@@ -28,6 +28,7 @@ import static org.hibernate.tool.schema.SchemaToolingLogging.LOGGER;
 /**
  * @author Yuri-73
  */
+
 @RestController
 @RequestMapping("users")
 @RequiredArgsConstructor
