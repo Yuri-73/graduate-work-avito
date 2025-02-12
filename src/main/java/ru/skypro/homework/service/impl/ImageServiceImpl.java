@@ -18,6 +18,12 @@ import java.nio.file.Path;
 import java.security.Principal;
 import java.util.UUID;
 
+/**
+ * {@link Класс} ImageServiceImpl реализации логики работы с изображениями <br>
+ *
+ * @author Chowo
+ */
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -32,6 +38,13 @@ public class ImageServiceImpl implements ImageService {
     @Value("${avatar.dir.path}")
     private String avatarPath;
 
+    /**
+     * Сохранение картинки объявления.
+     * </p>
+     * @param image файл изображения
+     * @param properties Dto объекта CreateOrUpdateAd.
+     * @return Image
+     */
     @Override
     public Image uploadAdImage(CreateOrUpdateAd properties, MultipartFile image) throws IOException {
         createDirectory();
@@ -45,11 +58,24 @@ public class ImageServiceImpl implements ImageService {
         return image1;
     }
 
+    /**
+     * Выведение id картинки из БД по пути файла.
+     * @param imagePath файл изображения
+     * @return Integer
+     * @throws ImageNotFoundException если такого пути не обнаружено в БД
+     */
     @Override
     public Integer findImageIdByImagePath(String imagePath) {
         return imageRepository.findByImagePath(imagePath).orElseThrow(ImageNotFoundException::new).getId();
     }
 
+    /**
+     * Изменение картинки в БД.
+     * @param imageId идентификатор изображения
+     * @param image файл изображения
+     * @return String путь к изменённому файлу
+     * @throws ImageNotFoundException если такой image не обнаружено в БД
+     */
     @Override
     public String updateAdImage(Integer imageId, MultipartFile image) throws IOException {
         if (!imageRepository.existsById(imageId)) {
@@ -60,10 +86,8 @@ public class ImageServiceImpl implements ImageService {
         Files.deleteIfExists(filePath);
         image.transferTo(filePath);
 
-
         return filePath.toString();
     }
-
 
     private String getExtensions(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
@@ -77,9 +101,9 @@ public class ImageServiceImpl implements ImageService {
     }
 
     /**
-     * Удаление изображения
-     *
-     * @param imageId
+     * Удаление изображения.
+     * </p>
+     * @param imageId идентификатор изображения
      */
     @Override
     public void deleteImage(Integer imageId) {
@@ -88,6 +112,13 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
+    /**
+     * Сохранение аватарки.
+     * </p>
+     * @param image файл изображения
+     * </p>
+     * @return Image
+     */
     @Override
     public Image saveImage(MultipartFile image, Principal principal) throws IOException {
         createDirectoryAvatar();
@@ -114,10 +145,15 @@ public class ImageServiceImpl implements ImageService {
         return originalPath.substring(originalPath.lastIndexOf(".") + 1);
     }
 
+    /**
+     * Получение изображения из БД.
+     * <p>
+     * @param id идентификатор изображения
+     * </p>
+     * @return byte[]
+     */
     public byte[] getImageBytes(Integer id) throws IOException {
-        System.out.println("id = " +id);
         Path imagePath = Path.of(imageRepository.findById(id).orElseThrow(() -> new ImageNotFoundException(id)).getImagePath());
-        System.out.println("imagePath.toString() - " +imagePath.toString());
         return Files.readAllBytes(imagePath);
     }
 

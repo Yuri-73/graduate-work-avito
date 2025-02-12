@@ -9,6 +9,7 @@ import ru.skypro.homework.dto.ad.AdsDTO;
 import ru.skypro.homework.dto.ad.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ad.ExtendedAd;
 import ru.skypro.homework.exception.AdNotFoundException;
+import ru.skypro.homework.exception.IncorrectPasswordException;
 import ru.skypro.homework.exception.UserNotFoundException;
 import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.model.Ad;
@@ -22,6 +23,11 @@ import ru.skypro.homework.service.ImageService;
 import javax.transaction.Transactional;
 import java.io.IOException;
 
+/**
+ * {@link Класс} AdServiceImpl реализации логики работы с объявлениями <br>
+ *
+ * @author Chowo
+ */
 @Slf4j
 @Transactional
 @Service
@@ -32,7 +38,6 @@ public class AdServiceImpl implements AdService {
     private final AdMapper adMapper;
     private final ImageService imageService;
 
-
     public AdServiceImpl(AdRepository adRepository, UserRepository userRepository, AdMapper adMapper, ImageService imageService) {
         this.adRepository = adRepository;
         this.userRepository = userRepository;
@@ -40,17 +45,30 @@ public class AdServiceImpl implements AdService {
         this.imageService = imageService;
     }
 
-
+    /**
+     * Метод получения всех объявлений в БД.
+     * @return AdsDTO Dto-объекты, состоящие из списка объектов AdDTO и их количества
+     */
     @Override
     public AdsDTO getAllAds() {
         return adMapper.adsToAdsDto(adRepository.findAll());
     }
 
+    /**
+     * Метод нахождения объявления по его id в БД.
+     * @param adId идентификатор объявления в БД.
+     * @return ExtendedAd Dto-объект объявления.
+     */
     @Override
     public ExtendedAd getAd(Integer adId) {
         return adMapper.adToExtendedDtoOut(adRepository.findById(adId).orElse(null));
     }
 
+    /**
+     * Метод получения объявлений авторизованного пользователя.
+     * @param authentication объект аутентификации.
+     * @return AdsDTO Dto-объект списка всех объявлений пользователя.
+     */
     @Override
     public AdsDTO getAdsMe(Authentication authentication) {
         User user = userRepository.findByUsername(authentication.getName()).orElse(null);
@@ -60,6 +78,13 @@ public class AdServiceImpl implements AdService {
         return adMapper.adsToAdsDto(adRepository.findAllByUserId(user.getId()).get());
     }
 
+    /**
+     * Метод сохранения объявления авторизованного пользователя.
+     * @param properties Dto объект объявления.
+     * @param image объект entity изображения.
+     * @param userName логин пользователя.
+     * @return AdDTO Dto-объект объявления.
+     */
     @Override
     public AdDTO addAd(CreateOrUpdateAd properties, MultipartFile image, String userName) throws IOException {
         User user = userRepository.findByUsername(userName).orElseThrow(() -> new UserNotFoundException(userName));
@@ -69,6 +94,13 @@ public class AdServiceImpl implements AdService {
         return adMapper.adToAdDto(ad);
     }
 
+    /**
+     * Метод обновления объявления авторизованного пользователя.
+     * @param properties Dto объект объявления.
+     * @param adId идентификатор объявления.
+     * @param properties Dto объявления.
+     * @return AdDTO Dto-объект объявления.
+     */
     @Override
     public AdDTO updateAd(Integer adId, CreateOrUpdateAd properties) {
         if (!adRepository.existsById(adId)) {
@@ -82,6 +114,12 @@ public class AdServiceImpl implements AdService {
         return adMapper.adToAdDto(ad);
     }
 
+    /**
+     * Метод обновления картинки объявления пользователя.
+     * @param adId идентификатор объявления.
+     * @param image картинка объявления.
+     * @return String путь к изменённому файлу.
+     */
     @Override
     public String updateImage(Integer adId, MultipartFile image) throws IOException {
         if (!adRepository.existsById(adId)) {
@@ -95,6 +133,11 @@ public class AdServiceImpl implements AdService {
         return imageService.updateAdImage(ad.getImage().getId(), image);
     }
 
+    /**
+     * Метод удаления объявления.
+     * @param adId идентификатор объявления.
+     * @throws AdNotFoundException если нет такого объявления в БД.
+     */
     @Override
     public void delete(Integer adId) {
         if (!adRepository.existsById(adId)) {
@@ -104,6 +147,12 @@ public class AdServiceImpl implements AdService {
         adRepository.deleteById(adId);
     }
 
+    /**
+     * Метод нахождения объявления.
+     * @param adId идентификатор объявления.
+     * @throws AdNotFoundException если нет такого объявления в БД.
+     * @return String.
+     */
     public String getAdUserName(Integer adId) {
         return adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException(adId)).getUser().getUsername();
     }

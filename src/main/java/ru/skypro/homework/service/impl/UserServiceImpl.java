@@ -23,6 +23,11 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Optional;
 
+/**
+ * {@link Класс} UserServiceImpl реализации логики работы с пользователями <br>
+ *
+ * @author Yuri-73
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Transactional

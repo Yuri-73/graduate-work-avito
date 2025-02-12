@@ -21,6 +21,11 @@ import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.List;
 
+/**
+ * {@link Класс} CommentServiceImpl реализации логики работы с комментариями <br>
+ *
+ * @author Chowo
+ */
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -31,13 +36,29 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
     private final AdServiceImpl adService;
 
-
+    /**
+     * Метод для получения всех комментариев объявления.
+     *
+     * @param adId идентификатор объявления.
+     * @return Dto CommentsDTO.
+     * @throws CommentsNotFoundException выбрасывается, если по id объявления нет комментариев.
+     */
     @Override
     public CommentsDTO getComments(Integer adId) {
         List<Comment> comments = commentsRepository.getAllByAdId(adId).orElseThrow(()-> new CommentsNotFoundException(adId));
         return CommentMapper.toCommentsDTO(comments);
     }
 
+    /**
+     * Метод для записи комментария для объявления.
+     *
+     * @param adId идентификатор объявления.
+     * @param createOrUpdateCommentDTO Dto.
+     * @param principal объект аутентификации.
+     * @return Dto CommentsDTO.
+     * @throws AdNotFoundException выбрасывается, если по id объявления нет объявлений.
+     * @throws UserNotFoundException выбрасывается, если по имени пользователя нет пользователя в БД.
+     */
     @Override
     public CommentDTO postComment(Integer adId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO, Principal principal) {
         Ad ad = adRepository.findById(adId).orElseThrow(()-> new AdNotFoundException(adId));
@@ -47,11 +68,25 @@ public class CommentServiceImpl implements CommentService {
         return CommentMapper.commentToDto(comment);
     }
 
+    /**
+     * Метод удаления комментария для объявления.
+     *
+     * @param adId идентификатор объявления.
+     * @param commentId идентификатор комментария.
+     */
     @Override
     public void deleteComment(Integer adId, Integer commentId) {
         commentsRepository.deleteById(commentId);
     }
 
+    /**
+     * Метод обновления комментария для объявления.
+     *
+     * @param adId идентификатор объявления.
+     * @param commentId идентификатор комментария.
+     * @param createOrUpdateCommentDTO Dto комментария.
+     * @throws CommentsNotFoundException выбрасывается, если по id объявления нет комметариев.
+     */
     @Override
     public CommentDTO updateComment(Integer adId, Integer commentId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
         Comment comment = commentsRepository.findById(commentId).orElseThrow(()->new CommentsNotFoundException(adId));
@@ -60,6 +95,12 @@ public class CommentServiceImpl implements CommentService {
         return CommentMapper.commentToDto(comment);
     }
 
+    /**
+     * Метод нахождения комментария.
+     *
+     * @param commentId идентификатор комментария.
+     * @throws CommentsNotFoundException выбрасывается, если комментарий отсутствует.
+     */
     public String getCommentUserName(Integer commentId) {
         return commentsRepository.findById(commentId).orElseThrow(CommentsNotFoundException::new).getAuthor().getUsername();
     }
