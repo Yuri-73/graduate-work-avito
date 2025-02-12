@@ -6,17 +6,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.skypro.homework.config.MyUserDetailsService;
+import ru.skypro.homework.config.UserSecurityDTO;
 import ru.skypro.homework.controller.UserController;
 import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.dto.user.NewPassword;
@@ -27,6 +30,7 @@ import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AuthService;
 import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
+import ru.skypro.homework.service.impl.ImageServiceImpl;
 import ru.skypro.homework.service.impl.UserServiceImpl;
 
 import javax.sql.DataSource;
@@ -41,27 +45,32 @@ public class UserControllerTest {
     private int port;
 
     @Autowired
-    UserDetailsManager manager;
+    private UserController userController;
+
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
+
+    @Autowired
+    private TestRestTemplate restTemplate;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     UserServiceImpl userService;
 
 
-    @Autowired
-    ImageService imageService;
-
-    @Autowired
-    private UserController userController;
-
-
-    @Autowired
-    private TestRestTemplate restTemplate;
+    @MockBean
+    ImageServiceImpl imageService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    UserDetailsManager manager;
 
     @Autowired
     UserMapper mapper;
@@ -71,7 +80,6 @@ public class UserControllerTest {
 
     @Autowired
     AuthService authService;
-
 
     private User user;
 
@@ -98,8 +106,7 @@ public class UserControllerTest {
         newPasswordDto.setCurrentPassword("password");
         newPasswordDto.setNewPassword("newPassword");
 
-        ResponseEntity<?> response = restTemplate.withBasicAuth("test@test.com", "testPassword")
-                .postForEntity("http://localhost:" + port + "/users/set_password", newPasswordDto, String.class);
+        ResponseEntity<?> response = restTemplate.postForEntity("http://localhost:" + port + "/users/set_password", newPasswordDto, String.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }

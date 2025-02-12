@@ -1,6 +1,8 @@
 package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,8 @@ public class ImageServiceImpl implements ImageService {
     @Value("${avatar.dir.path}")
     private String avatarPath;
 
+    private final Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
+
     /**
      * Сохранение картинки объявления.
      * </p>
@@ -47,6 +51,7 @@ public class ImageServiceImpl implements ImageService {
      */
     @Override
     public Image uploadAdImage(CreateOrUpdateAd properties, MultipartFile image) throws IOException {
+        logger.info("ImageService uploadAdImage is running");
         createDirectory();
         Path filePath = Path.of(imagePath, properties.getTitle() + properties.getPrice() + "." + image.getOriginalFilename());
         image.transferTo(filePath);
@@ -66,6 +71,7 @@ public class ImageServiceImpl implements ImageService {
      */
     @Override
     public Integer findImageIdByImagePath(String imagePath) {
+        logger.info("ImageService findImageIdByImagePath is running");
         return imageRepository.findByImagePath(imagePath).orElseThrow(ImageNotFoundException::new).getId();
     }
 
@@ -78,6 +84,7 @@ public class ImageServiceImpl implements ImageService {
      */
     @Override
     public String updateAdImage(Integer imageId, MultipartFile image) throws IOException {
+        logger.info("ImageService updateAdImage is running");
         if (!imageRepository.existsById(imageId)) {
             throw new ImageNotFoundException(imageId);
         }
@@ -90,10 +97,12 @@ public class ImageServiceImpl implements ImageService {
     }
 
     private String getExtensions(String fileName) {
+        logger.info("ImageService getExtensions is running");
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
     private void createDirectory() throws IOException {
+        logger.info("ImageService createDirectory is running");
         Path path = Path.of(imagePath);
         if (Files.notExists(path)) {
             Files.createDirectory(path);
@@ -107,9 +116,11 @@ public class ImageServiceImpl implements ImageService {
      */
     @Override
     public void deleteImage(Integer imageId) {
+        logger.info("ImageService deleteImage is running");
         if (imageRepository.existsById(imageId)) {
             imageRepository.deleteById(imageId);
         }
+        logger.info("Image deleted [{}]", imageId);
     }
 
     /**
@@ -121,6 +132,7 @@ public class ImageServiceImpl implements ImageService {
      */
     @Override
     public Image saveImage(MultipartFile image, Principal principal) throws IOException {
+        logger.info("ImageService saveImage is running");
         createDirectoryAvatar();
         Path filePath = Path.of(avatarPath, principal.getName()
                 .substring(0, principal.getName()
@@ -131,10 +143,12 @@ public class ImageServiceImpl implements ImageService {
         Image image1 = new Image();
         image1.setImagePath(filePath.toString());
         imageRepository.save(image1);
+        logger.info("Image [{}] saved ", image1.getId());
         return image1;
     }
 
     private void createDirectoryAvatar() throws IOException {
+        logger.info("ImageService createDirectoryAvatar is running");
         Path path = Path.of(avatarPath);
         if (Files.notExists(path)) {
             Files.createDirectory(path);
@@ -142,6 +156,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     private String getExtension(String originalPath) {
+        logger.info("ImageService getExtension is running");
         return originalPath.substring(originalPath.lastIndexOf(".") + 1);
     }
 
@@ -153,8 +168,8 @@ public class ImageServiceImpl implements ImageService {
      * @return byte[]
      */
     public byte[] getImageBytes(Integer id) throws IOException {
+        logger.info("ImageService getImageBytes is running");
         Path imagePath = Path.of(imageRepository.findById(id).orElseThrow(() -> new ImageNotFoundException(id)).getImagePath());
         return Files.readAllBytes(imagePath);
     }
-
 }

@@ -1,6 +1,8 @@
 package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CommentsDTO;
@@ -36,6 +38,8 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
     private final AdServiceImpl adService;
 
+    private final Logger logger = LoggerFactory.getLogger(CommentServiceImpl.class);
+
     /**
      * Метод для получения всех комментариев объявления.
      *
@@ -45,6 +49,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public CommentsDTO getComments(Integer adId) {
+        logger.info("CommentService getComments is running");
         List<Comment> comments = commentsRepository.getAllByAdId(adId).orElseThrow(()-> new CommentsNotFoundException(adId));
         return CommentMapper.toCommentsDTO(comments);
     }
@@ -61,10 +66,12 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public CommentDTO postComment(Integer adId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO, Principal principal) {
+        logger.info("CommentService postComment is running");
         Ad ad = adRepository.findById(adId).orElseThrow(()-> new AdNotFoundException(adId));
         User user = userRepository.findByUsername(principal.getName()).orElseThrow(()-> new UserNotFoundException(principal.getName()));
         Comment comment = CommentMapper.createComment(createOrUpdateCommentDTO, ad, user);
         commentsRepository.save(comment);
+        logger.info("Comment [{}] successfully created for Ad [{}]", comment.getPk(), adId);
         return CommentMapper.commentToDto(comment);
     }
 
@@ -76,7 +83,9 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public void deleteComment(Integer adId, Integer commentId) {
+        logger.info("CommentService deleteComment is running");
         commentsRepository.deleteById(commentId);
+        logger.info("Comments with id: {} successfully deleted for ad with id: {}", commentId, adId);
     }
 
     /**
@@ -89,9 +98,11 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public CommentDTO updateComment(Integer adId, Integer commentId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
+        logger.info("CommentService updateComment is running");
         Comment comment = commentsRepository.findById(commentId).orElseThrow(()->new CommentsNotFoundException(adId));
         comment.setText(createOrUpdateCommentDTO.getText());
         commentsRepository.save(comment);
+        logger.info("Comment [{}] successfully created for Ad [{}]", comment.getPk(), adId);
         return CommentMapper.commentToDto(comment);
     }
 
@@ -102,6 +113,7 @@ public class CommentServiceImpl implements CommentService {
      * @throws CommentsNotFoundException выбрасывается, если комментарий отсутствует.
      */
     public String getCommentUserName(Integer commentId) {
+        logger.info("CommentService getCommentUserName is running");
         return commentsRepository.findById(commentId).orElseThrow(CommentsNotFoundException::new).getAuthor().getUsername();
     }
 }

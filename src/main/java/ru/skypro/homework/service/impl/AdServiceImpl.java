@@ -1,6 +1,8 @@
 package ru.skypro.homework.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,6 +40,8 @@ public class AdServiceImpl implements AdService {
     private final AdMapper adMapper;
     private final ImageService imageService;
 
+    private final Logger logger = LoggerFactory.getLogger(AdServiceImpl.class);
+
     public AdServiceImpl(AdRepository adRepository, UserRepository userRepository, AdMapper adMapper, ImageService imageService) {
         this.adRepository = adRepository;
         this.userRepository = userRepository;
@@ -51,6 +55,7 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public AdsDTO getAllAds() {
+        logger.info("AdService findAll is running");
         return adMapper.adsToAdsDto(adRepository.findAll());
     }
 
@@ -61,6 +66,7 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public ExtendedAd getAd(Integer adId) {
+        logger.info("AdService getAd is running");
         return adMapper.adToExtendedDtoOut(adRepository.findById(adId).orElse(null));
     }
 
@@ -71,6 +77,7 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public AdsDTO getAdsMe(Authentication authentication) {
+        logger.info("AdService getAdsMe is running");
         User user = userRepository.findByUsername(authentication.getName()).orElse(null);
         if (user == null) {
             return null;
@@ -87,10 +94,12 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public AdDTO addAd(CreateOrUpdateAd properties, MultipartFile image, String userName) throws IOException {
+        logger.info("AdService createAd is running");
         User user = userRepository.findByUsername(userName).orElseThrow(() -> new UserNotFoundException(userName));
         Image image1 = imageService.uploadAdImage(properties, image);
         Ad ad = adMapper.createAd(properties, user, image1);
         adRepository.save(ad);
+        log.info("Ad {} {} saved", ad.getId(), ad.getTitle());
         return adMapper.adToAdDto(ad);
     }
 
@@ -103,6 +112,7 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public AdDTO updateAd(Integer adId, CreateOrUpdateAd properties) {
+        logger.info("AdService updateAd is running");
         if (!adRepository.existsById(adId)) {
             throw new AdNotFoundException(adId);
         }
@@ -111,6 +121,7 @@ public class AdServiceImpl implements AdService {
         ad.setPrice(properties.getPrice());
         ad.setDescription(properties.getDescription());
         adRepository.save(ad);
+        log.info("Ad {} {} saved", ad.getId(), ad.getTitle());
         return adMapper.adToAdDto(ad);
     }
 
@@ -122,6 +133,7 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public String updateImage(Integer adId, MultipartFile image) throws IOException {
+        logger.info("AdService updateImage is running");
         if (!adRepository.existsById(adId)) {
             throw new AdNotFoundException(adId);
         }
@@ -140,6 +152,7 @@ public class AdServiceImpl implements AdService {
      */
     @Override
     public void delete(Integer adId) {
+        logger.info("AdService delete is running");
         if (!adRepository.existsById(adId)) {
             throw new AdNotFoundException(adId);
         }
@@ -154,6 +167,7 @@ public class AdServiceImpl implements AdService {
      * @return String.
      */
     public String getAdUserName(Integer adId) {
+        logger.info("AdService getAdUserName is running");
         return adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException(adId)).getUser().getUsername();
     }
 }
