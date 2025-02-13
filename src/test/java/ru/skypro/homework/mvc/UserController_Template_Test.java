@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.skypro.homework.config.MyUserDetailsService;
@@ -29,6 +30,7 @@ import ru.skypro.homework.controller.AuthController;
 import ru.skypro.homework.controller.UserController;
 import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.dto.user.NewPassword;
+import ru.skypro.homework.dto.user.PhonePattern;
 import ru.skypro.homework.dto.user.Register;
 import ru.skypro.homework.dto.user.UserDTO;
 import ru.skypro.homework.mapper.UserMapper;
@@ -42,6 +44,8 @@ import ru.skypro.homework.service.impl.ImageServiceImpl;
 import ru.skypro.homework.service.impl.UserServiceImpl;
 
 import javax.sql.DataSource;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.security.Principal;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -74,34 +78,38 @@ public class UserController_Template_Test {
     @Autowired
     private ObjectMapper objectMapper;
 
-
-
-    @Autowired
-    UserDetailsManager manager;
-
     @Autowired
     UserMapper mapper;
 
     @Autowired
     AuthService authService;
 
-    private User user;
+    private UserDTO userDTO;
+    Register register;
 
     @BeforeEach
     public void beforeEach() {
-        user = new User();
-        user.setId(1);
-        user.setUsername("test@test.com");
-        user.setPassword(passwordEncoder.encode("password"));
-        user.setFirstname("Ivan");
-        user.setFirstname("Ivanov");
-        user.setPhone("+7852-123-45-67");
-        user.setRole(Role.USER);
+        userDTO = new UserDTO();
+        userDTO.setId(1);
+        userDTO.setEmail("test@test.com");
+        userDTO.setFirstName("Ivan");
+        userDTO.setLastName("Ivanov");
+        userDTO.setPhone("+7852-123-45-67");
+        userDTO.setRole(Role.USER);
+        userDTO.setImage("/image");
 
-        Image image = new Image();
-        image.setId(1);
-        image.setImagePath("/image");
-        user.setImage(image);
+        register = new Register();
+        register.setUsername("wasja@gmail.com");
+        register.setPassword("ssssssss");
+        register.setFirstName("Вася");
+        register.setLastName("Иванов");
+        register.setPhone("+7 800 5550000");
+        register.setRole(Role.USER);
+    }
+
+    @Test
+    void contextLoads() throws Exception {
+        org.assertj.core.api.Assertions.assertThat(userController).isNotNull();
     }
 
 //    @Test
@@ -117,17 +125,8 @@ public class UserController_Template_Test {
 
     @Test
     public void getUserTest() throws Exception {
-
-        //initial data:
-        Register register = new Register();
-        register.setUsername("wasja@gmail.com");
-        register.setPassword("ssssssss");
-        register.setFirstName("Вася");
-        register.setLastName("Иванов");
-        register.setPhone("+7 800 5550000");
-        register.setRole(Role.USER);
         //test:
-        var saved = restTemplate.postForObject("/register", register, Register.class);
+        var userDTO = restTemplate.postForObject("/register", register, Register.class);
 
         Principal principal1 = new Principal() {
             @Override
@@ -144,15 +143,9 @@ public class UserController_Template_Test {
                 UserDTO.class
         );
 
-//        org.assertj.core.api.Assertions.assertThat(result.getName()).isEqualTo(name);
-//        org.assertj.core.api.Assertions.assertThat(result.getAge()).isEqualTo(age);
         org.assertj.core.api.Assertions.assertThat(result).isNotNull();
-
-        assertEquals(HttpStatus.OK, result);
+        org.assertj.core.api.Assertions.assertThat(result.getBody().getEmail()).isEqualTo(userDTO.getUsername());
     }
-
-
-
 
 //    @GetMapping("/me")
 //    public ResponseEntity<UserDTO> getUser(Principal principal) {
