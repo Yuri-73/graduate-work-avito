@@ -42,7 +42,6 @@ public class AuthServiceImpl implements AuthService {
             return false;
         }
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(userName);
-        logger.info(String.format("User authentication [%s]", userName));
         return encoder.matches(password, userDetails.getPassword());
     }
 
