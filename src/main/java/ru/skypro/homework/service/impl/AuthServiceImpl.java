@@ -38,9 +38,11 @@ public class AuthServiceImpl implements AuthService {
     public boolean login(String userName, String password) {
         logger.info("AuthService login is running");
         if (userService.findByUsername(userName).isEmpty()) {
+            logger.info(String.format("Incorrect authentication data User [%s]", userName));
             return false;
         }
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(userName);
+        logger.info(String.format("User authentication [%s]", userName));
         return encoder.matches(password, userDetails.getPassword());
     }
 
@@ -48,6 +50,7 @@ public class AuthServiceImpl implements AuthService {
     public boolean register(Register register) {
         logger.info("AuthService register is running");
         if (userService.findByUsername(register.getUsername()).isPresent()) {
+            logger.info(String.format("Incorrect registration data User [%s]", register.getUsername()));
             return false;
         }
         register.setPassword(encoder.encode(register.getPassword()));
