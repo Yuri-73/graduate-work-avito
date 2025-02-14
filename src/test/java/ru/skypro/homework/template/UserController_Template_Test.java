@@ -2,6 +2,7 @@ package ru.skypro.homework.template;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -99,8 +100,9 @@ public class UserController_Template_Test {
     }
 
     @Test
+    @DisplayName("Тест на получение информации об авторизованном пользователе")
     @WithMockUser(username = "Test_User")
-    void testCurrentUser(){
+    void getUserTest(){
         User user = new User();
         user.setUsername("Test_User");
         user.setPassword(passwordEncoder.encode("password"));
