@@ -18,7 +18,12 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableMethodSecurity
 public class WebSecurityConfig {
-    // массив строк auth_whitelist, который содержит список URL-адресов.
+
+    /**
+     * {@link # AUTH_WHITELIST}
+     * <p>
+     * Массив строк, который содержит список URL-адресов.
+     */
     private static final String[] AUTH_WHITELIST = {
             "/swagger-resources/**",
             "/swagger-ui.html",

@@ -1,10 +1,13 @@
 package ru.skypro.homework.mapper;
+import ru.skypro.homework.model.Image;
 
 import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.user.Register;
 import ru.skypro.homework.dto.user.UpdateUserDTO;
 import ru.skypro.homework.dto.user.UserDTO;
 import ru.skypro.homework.model.User;
+
+import java.util.Optional;
 
 /**
  * @author Yuri-73
@@ -48,7 +51,11 @@ public class UserMapper {
         userDto.setLastName(user.getLastname());
         userDto.setPhone(user.getPhone());
         userDto.setRole(user.getRole());
-        userDto.setImage("/images/" + user.getImage().getId());
+//        userDto.setImage("/images/" + user.getImage().getId());
+        userDto.setImage("/images/" + Optional.of(user)
+                .map(User::getImage)
+                .map(Image::getId)
+                .orElse(-1));
 
         return userDto;
     }

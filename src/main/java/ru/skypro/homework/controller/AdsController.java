@@ -168,7 +168,7 @@ public class AdsController {
 
     @PreAuthorize("hasRole('ADMIN') or @adServiceImpl.getAdUserName(#id) == authentication.principal.username")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> removeAd(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> removeAd(@PathVariable("id") Integer id) throws IOException {
         adService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

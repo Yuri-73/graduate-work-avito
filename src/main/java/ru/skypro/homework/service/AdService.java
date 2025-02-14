@@ -22,6 +22,6 @@ public interface AdService {
 
     public String updateImage(Integer adId, MultipartFile image) throws IOException;
 
-    public void delete(Integer adId);
+    public void delete(Integer adId) throws IOException;
 
 }

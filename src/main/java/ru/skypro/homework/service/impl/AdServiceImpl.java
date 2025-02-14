@@ -24,6 +24,8 @@ import ru.skypro.homework.service.ImageService;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * {@link Класс} AdServiceImpl реализации логики работы с объявлениями <br>
@@ -67,7 +69,7 @@ public class AdServiceImpl implements AdService {
     @Override
     public ExtendedAd getAd(Integer adId) {
         logger.info("AdService getAd is running");
-        return adMapper.adToExtendedDtoOut(adRepository.findById(adId).orElse(null));
+        return adMapper.adToExtendedDtoOut(adRepository.findById(adId).orElseThrow(() -> new AdNotFoundException(adId)));
     }
 
     /**
@@ -78,10 +80,7 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdsDTO getAdsMe(Authentication authentication) {
         logger.info("AdService getAdsMe is running");
-        User user = userRepository.findByUsername(authentication.getName()).orElse(null);
-        if (user == null) {
-            return null;
-        }
+        User user = userRepository.findByUsername(authentication.getName()).orElseThrow(() -> new UserNotFoundException(authentication.getName()));
         return adMapper.adsToAdsDto(adRepository.findAllByUserId(user.getId()).get());
     }
 
@@ -151,12 +150,15 @@ public class AdServiceImpl implements AdService {
      * @throws AdNotFoundException если нет такого объявления в БД.
      */
     @Override
-    public void delete(Integer adId) {
+    public void delete(Integer adId) throws IOException {
         logger.info("AdService delete is running");
         if (!adRepository.existsById(adId)) {
             throw new AdNotFoundException(adId);
         }
 
+        Ad ad = adRepository.findById(adId).orElse(null);
+        Path filePath = Path.of(ad.getImage().getImagePath());
+        Files.deleteIfExists(filePath);
         adRepository.deleteById(adId);
     }
 
