@@ -2,20 +2,28 @@ package ru.skypro.homework.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import ru.skypro.homework.dto.Role;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+/**
+ * Класс для настройки правил доступа к различным URL-адресам и методам,
+ * а также используется шифрование паролей.
+ */
 @Configuration
+@EnableMethodSecurity
 public class WebSecurityConfig {
 
+    /**
+     * {@link # AUTH_WHITELIST}
+     * <p>
+     * Массив строк, который содержит список URL-адресов.
+     */
     private static final String[] AUTH_WHITELIST = {
             "/swagger-resources/**",
             "/swagger-ui.html",
@@ -25,18 +33,9 @@ public class WebSecurityConfig {
             "/register"
     };
 
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails user =
-                User.builder()
-                        .username("user@gmail.com")
-                        .password("password")
-                        .passwordEncoder(passwordEncoder::encode)
-                        .roles(Role.USER.name())
-                        .build();
-        return new InMemoryUserDetailsManager(user);
-    }
-
+    /**
+     * Метод для настройки правил доступа к URL-адресам и методам при помощи объекта HttpSecurity.
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf()
@@ -48,15 +47,17 @@ public class WebSecurityConfig {
                                         .permitAll()
                                         .mvcMatchers("/ads/**", "/users/**")
                                         .authenticated())
-                .cors()
-                .and()
-                .httpBasic(withDefaults());
+                                        .cors()
+                                        .and()
+                                        .httpBasic(withDefaults());
         return http.build();
     }
 
+    /**
+     * Метод возвращает объект типа PasswordEncoder для шифрования паролей.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }
