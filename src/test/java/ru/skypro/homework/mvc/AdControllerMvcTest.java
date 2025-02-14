@@ -1,8 +1,10 @@
 package ru.skypro.homework.mvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -16,11 +18,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.skypro.homework.config.WebSecurityConfig;
 import ru.skypro.homework.controller.AdsController;
+import ru.skypro.homework.controller.UserController;
 import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.dto.ad.AdsDTO;
 import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.model.Ad;
+import ru.skypro.homework.model.Image;
 import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.ImageRepository;
@@ -28,6 +32,7 @@ import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.impl.AdServiceImpl;
 import ru.skypro.homework.service.impl.ImageServiceImpl;
+import ru.skypro.homework.service.impl.UserServiceImpl;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -37,7 +42,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ConditionalOnClass
+//@ConditionalOnClass
 @WebMvcTest(AdsController.class)
 @Import({WebSecurityConfig.class})
 public class AdControllerMvcTest {
@@ -50,6 +55,12 @@ public class AdControllerMvcTest {
 
     @MockBean
     private AdRepository adRepository;
+
+    @SpyBean
+    private UserServiceImpl userService;
+
+    @SpyBean
+    private UserMapper userMapper;
 
     @MockBean
     private UserRepository userRepository;
@@ -69,6 +80,26 @@ public class AdControllerMvcTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @InjectMocks
+    private AdsController adsController;
+
+    private User user;
+
+    @BeforeEach
+    public void beforeEach() {
+        user = new User();
+        user.setId(1);
+        user.setUsername("user");
+        user.setPassword(passwordEncoder.encode("password"));
+        user.setFirstname("Ivan");
+        user.setLastname("Ivanov");
+        user.setPhone("+7852-123-45-67");
+        user.setRole(Role.USER);
+
+        Image image = new Image();
+        user.setImage(image);
+    }
+
     @Test
     @WithMockUser(username = "testUser", authorities = {"USER"})
     @DisplayName("Тест на вывод всех объявлений")
@@ -81,16 +112,6 @@ public class AdControllerMvcTest {
 //    @Test
 //    @WithMockUser(username = "user") //иначе 401 Unauthorized, ведь Spring должен подложить principal в параметры
 //    public void getMyAdsTest() throws Exception {
-//        //готовим затычку для userRepository.findByUsername
-//
-//        User user = new User();
-//        user.setId(1);
-//        user.setUsername("user");
-//        user.setPassword(passwordEncoder.encode("password"));
-//        user.setPhone("phone");
-//        user.setLastname("Test");
-//        user.setFirstname("FirstTest");
-//        user.setRole(Role.USER);
 //        userRepository.save(user);
 //
 //        //созданный юзер содержит коллекцию объявлений, которые должны вернуться
