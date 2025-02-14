@@ -193,33 +193,6 @@ public class UserControllerMvcTest {
                 });
         verify(userService, times(1)).updateUser(eq(expected), any(Principal.class));
     }
-
-//    @Test
-//    @WithMockUser(username = "user")
-//    public void setAvatarTest() throws Exception {
-//        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
-//
-//        MockMultipartFile file = new MockMultipartFile(
-//                "image",
-//                "test.jpg",
-//                MediaType.IMAGE_JPEG_VALUE,
-//                "image".getBytes());
-//
-//        mockMvc.perform(MockMvcRequestBuilders.multipart("/users/me/image")
-//                        .file(file)
-//                        .param("image", "test.jpg")
-//                        .with(request -> {
-//                            request.setMethod("PATCH");
-//                            request.setRemoteUser("user");
-//                            return request;
-//                        }))
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andReturn();
-//
-//        verify(userService, times(1))
-//                .updateUserImage(eq(file), any(Principal.class));
-//    }
-
 }
 
 
