@@ -48,12 +48,12 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public ExtendedAd getAd(Integer adId) {
-        return adMapper.adToExtendedDtoOut(adRepository.findById(adId).orElse(null));
+        return adMapper.adToExtendedDtoOut(adRepository.findById(adId).orElseThrow(()-> new AdNotFoundException(adId)));
     }
 
     @Override
     public AdsDTO getAdsMe(Authentication authentication) {
-        User user = userRepository.findByUsername(authentication.getName()).orElse(null);
+        User user = userRepository.findByUsername(authentication.getName()).orElseThrow(()-> new UserNotFoundException(authentication.getName()));
         if (user == null) {
             return null;
         }
@@ -74,7 +74,7 @@ public class AdServiceImpl implements AdService {
         if (!adRepository.existsById(adId)) {
             throw new AdNotFoundException(adId);
         }
-        Ad ad = adRepository.findById(adId).orElse(null);
+        Ad ad = adRepository.findById(adId).orElseThrow(()-> new AdNotFoundException(adId));
         ad.setTitle(properties.getTitle());
         ad.setPrice(properties.getPrice());
         ad.setDescription(properties.getDescription());
@@ -87,7 +87,7 @@ public class AdServiceImpl implements AdService {
         if (!adRepository.existsById(adId)) {
             throw new AdNotFoundException(adId);
         }
-        Ad ad = adRepository.findById(adId).orElse(null);
+        Ad ad = adRepository.findById(adId).orElseThrow(()-> new AdNotFoundException(adId));
         if (ad.getImage() != null) {
             imageService.deleteImage(ad.getImage().getId());
         }
