@@ -116,7 +116,7 @@ public class AdServiceImpl implements AdService {
         if (!adRepository.existsById(adId)) {
             throw new AdNotFoundException(adId);
         }
-        Ad ad = adRepository.findById(adId).orElse(null);
+        Ad ad = adRepository.findById(adId).orElseThrow(()-> new AdNotFoundException(adId));
         ad.setTitle(properties.getTitle());
         ad.setPrice(properties.getPrice());
         ad.setDescription(properties.getDescription());
@@ -137,7 +137,7 @@ public class AdServiceImpl implements AdService {
         if (!adRepository.existsById(adId)) {
             throw new AdNotFoundException(adId);
         }
-        Ad ad = adRepository.findById(adId).orElse(null);
+        Ad ad = adRepository.findById(adId).orElseThrow(()-> new AdNotFoundException(adId));
         if (ad.getImage() != null) {
             imageService.deleteImage(ad.getImage().getId());
         }
