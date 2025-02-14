@@ -6,7 +6,6 @@ import ru.skypro.homework.dto.Role;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-
 /**
  * Класс регистрации нового пользователя.
  * <p>

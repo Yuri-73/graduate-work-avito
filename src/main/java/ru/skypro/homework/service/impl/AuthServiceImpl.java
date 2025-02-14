@@ -1,5 +1,7 @@
 package ru.skypro.homework.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ public class AuthServiceImpl implements AuthService {
     private final UserMapper userMapper;
     private final UserServiceImpl userService;
 
+    private final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
+
     public AuthServiceImpl(MyUserDetailsService myUserDetailsService,
                            PasswordEncoder passwordEncoder,
                            UserRepository userRepository,
@@ -32,6 +36,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean login(String userName, String password) {
+        logger.info("AuthService login is running");
         if (userService.findByUsername(userName).isEmpty()) {
             return false;
         }
@@ -41,11 +46,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean register(Register register) {
+        logger.info("AuthService register is running");
         if (userService.findByUsername(register.getUsername()).isPresent()) {
             return false;
         }
         register.setPassword(encoder.encode(register.getPassword()));
         userRepository.save(userMapper.registerToUser(register));
+        logger.info(String.format("User register [%s]", register.getUsername()));
         return true;
     }
 }

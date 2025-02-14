@@ -1,5 +1,6 @@
-package ru.skypro.homework.mapper;
+package ru.skypro.homework.mapping;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
@@ -9,6 +10,7 @@ import ru.skypro.homework.dto.ad.AdDTO;
 import ru.skypro.homework.dto.ad.AdsDTO;
 import ru.skypro.homework.dto.ad.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ad.ExtendedAd;
+import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.model.Ad;
 import ru.skypro.homework.model.Image;
 import ru.skypro.homework.model.User;
@@ -25,24 +27,30 @@ public class AdMapperTest {
     @Spy
     private AdMapper adMapper;
 
-    @Test
-    public void createAdTest() {
+    private User user;
+    private Image image;
 
-        CreateOrUpdateAd createOrUpdateAd = new CreateOrUpdateAd();
-        createOrUpdateAd.setTitle("Огурец");
-        createOrUpdateAd.setPrice(200);
-        createOrUpdateAd.setDescription("Свежий");
-
-        User user = new User();
+    @BeforeEach
+    public void beforeEach() {
+        user = new User();
         user.setId(1);
         user.setUsername("username");
+        user.setPassword("encodedPassword");
         user.setFirstname("Ivan");
         user.setLastname("Ivanov");
         user.setPhone("+7852-123-45-67");
         user.setRole(Role.USER);
 
-        Image image = new Image();
+        image = new Image();
         user.setImage(image);
+    }
+
+    @Test
+    public void createAdTest() {
+        CreateOrUpdateAd createOrUpdateAd = new CreateOrUpdateAd();
+        createOrUpdateAd.setTitle("Огурец");
+        createOrUpdateAd.setPrice(200);
+        createOrUpdateAd.setDescription("Свежий");
 
         Ad ad = new Ad();
         ad.setTitle("Огурец");
@@ -62,19 +70,7 @@ public class AdMapperTest {
 
     @Test
     public void createAd_Null_ToAdTest() {
-
         CreateOrUpdateAd createOrUpdateAd = null;
-
-        User user = new User();
-        user.setId(1);
-        user.setUsername("username");
-        user.setFirstname("Ivan");
-        user.setLastname("Ivanov");
-        user.setPhone("+7852-123-45-67");
-        user.setRole(Role.USER);
-
-        Image image = new Image();
-        user.setImage(image);
 
         Ad ad = new Ad();
         ad.setTitle(" ");
@@ -88,17 +84,6 @@ public class AdMapperTest {
 
     @Test
     public void adToAdDtoTest() {
-        User user = new User();
-        user.setId(1);
-        user.setUsername("username");
-        user.setFirstname("Ivan");
-        user.setLastname("Ivanov");
-        user.setPhone("+7852-123-45-67");
-        user.setRole(Role.USER);
-
-        Image image = new Image();
-        user.setImage(image);
-
         Ad ad = new Ad();
         ad.setId(1);
         ad.setTitle("Огурец");
@@ -119,18 +104,6 @@ public class AdMapperTest {
 
     @Test
     public void ad_Null_ToAdDtoTest() {
-
-        User user = new User();
-        user.setId(1);
-        user.setUsername("username");
-        user.setFirstname("Ivan");
-        user.setLastname("Ivanov");
-        user.setPhone("+7852-123-45-67");
-        user.setRole(Role.USER);
-
-        Image image = new Image();
-        user.setImage(image);
-
         Ad ad = null;
 
         AdDTO adDTO = new AdDTO();
@@ -145,17 +118,6 @@ public class AdMapperTest {
 
     @Test
     public void adToExtendedDtoOutTest() {
-        User user = new User();
-        user.setId(1);
-        user.setUsername("username");
-        user.setFirstname("Ivan");
-        user.setLastname("Ivanov");
-        user.setPhone("+7852-123-45-67");
-        user.setRole(Role.USER);
-
-        Image image = new Image();
-        user.setImage(image);
-
         Ad ad = new Ad();
         ad.setId(1);
         ad.setTitle("Огурец");
@@ -181,17 +143,6 @@ public class AdMapperTest {
 
     @Test
     public void ad_Null_ToExtendedDtoOutTest() {
-        User user = new User();
-        user.setId(1);
-        user.setUsername("username");
-        user.setFirstname("Ivan");
-        user.setLastname("Ivanov");
-        user.setPhone("+7852-123-45-67");
-        user.setRole(Role.USER);
-
-        Image image = new Image();
-        user.setImage(image);
-
         Ad ad = null;
 
         ExtendedAd extendedAd = new ExtendedAd();
@@ -210,17 +161,6 @@ public class AdMapperTest {
 
     @Test
     public void adsToAdsDtoTest() {
-        User user = new User();
-        user.setId(1);
-        user.setUsername("username");
-        user.setFirstname("Ivan");
-        user.setLastname("Ivanov");
-        user.setPhone("+7852-123-45-67");
-        user.setRole(Role.USER);
-
-        Image image = new Image();
-        user.setImage(image);
-
         Ad ad = new Ad();
         ad.setId(1);
         ad.setTitle("Огурец");

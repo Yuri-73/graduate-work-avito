@@ -5,6 +5,9 @@ import ru.skypro.homework.model.Image;
 
 import java.util.Optional;
 
+/**
+ * @author Chowo
+ */
 public interface ImageRepository extends JpaRepository<Image, Integer> {
 
     Optional<Image> findByImagePath(String imagePath);

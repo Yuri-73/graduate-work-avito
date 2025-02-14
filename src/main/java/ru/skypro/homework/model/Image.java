@@ -26,6 +26,8 @@ import javax.persistence.*;
  * <p>
  * Поле {@code imagePath} содержит путь к изображению.
  * </p>
+ *
+ * @author Yuri-73
  */
 @Entity
 @Data
