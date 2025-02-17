@@ -7,14 +7,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.skypro.homework.dto.Role;
+import ru.skypro.homework.dto.ad.CreateOrUpdateAd;
 import ru.skypro.homework.model.User;
 import ru.skypro.homework.service.impl.AdServiceImpl;
 
+import java.nio.charset.StandardCharsets;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.skypro.homework.Constants.TEST_AD;
 
 
 //@AutoConfigureMockMvc
@@ -69,32 +81,36 @@ class AdsControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "test@test", authorities = "USER")
+    @WithMockUser
     void addAd() throws Exception {
 
 //        CreateOrUpdateAd properties = new CreateOrUpdateAd("test", 15000, "Test Ad description");
-//        MockMultipartFile image = new MockMultipartFile("test image",
-//                "testing.jpg",
-//                MediaType.IMAGE_JPEG_VALUE,
-//                "testing content".getBytes());
-//
-//
+        MockMultipartFile image = new MockMultipartFile("image",
+                "testing.jpg",
+                MediaType.IMAGE_JPEG_VALUE,
+                "testing content".getBytes());
+
+        MockMultipartFile properties = new MockMultipartFile("properties",
+                "",
+                MediaType.APPLICATION_JSON_VALUE,
+                "{\"title\":\"test\", \"price\":15000, \"description\":\"Test Ad description\"}".getBytes(StandardCharsets.UTF_8));
+
 //        Principal principal = () -> "test@test";
-//
-//
-////        AdDTO adDTO = new AdDTO();
-////        adDTO.setPk(1);
-////        adDTO.setTitle("Test Ad");
-//        when(adService.addAd(any(CreateOrUpdateAd.class), eq(image), eq("test@test"))).thenReturn(ADFORTESTS);
-//
-//        mockMvc.perform(multipart("/ads")
-//                        .file(new MockMultipartFile("properties", "",
-//                                MediaType.APPLICATION_JSON_VALUE,
-//                                objectMapper.writeValueAsBytes(properties)))
-//                        .file(image)
-//                        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE).principal(principal))
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$.pk").value(1))
+
+
+//        AdDTO adDTO = new AdDTO();
+//        adDTO.setPk(1);
+//        adDTO.setTitle("Test Ad");
+        given(adService.addAd(any(CreateOrUpdateAd.class), eq(image), eq("test@test"))).willReturn(TEST_AD);
+
+        mockMvc.perform(multipart("/ads")
+                        .file(properties)
+                        .file(image)
+                        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                        .with(csrf()))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.author").value(1));
 //                .andExpect(jsonPath("$.title").value("test"))
 //                .andExpect(jsonPath("$.price").value(15000));
     }
