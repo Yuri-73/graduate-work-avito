@@ -1,7 +1,8 @@
-package ru.skypro.homework.dto;
+package ru.skypro.homework.dto.user;
 
 import lombok.Data;
 
+import javax.validation.constraints.Size;
 
 
 /**
@@ -11,12 +12,15 @@ import lombok.Data;
  * логин (username) и пароль (password). Эти данные используются для аутентификации
  * пользователя в системе.
  * </p>
+ * @author Yuri-73
  */
 @Data
 public class Login {
 
+    @Size(min = 4, max = 32)
     private String username;
 
+    @Size(min = 8, max = 16)
     private String password;
 
 }
