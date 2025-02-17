@@ -34,7 +34,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Login login) {
         if (authService.login(login.getUsername(), login.getPassword())) {
-            logger.info(String.format("User authentication [%s]", login.getUsername()));
+            logger.info(String.format("User authentication [{}]", login.getUsername()));
             return ResponseEntity.ok().build();
         } else {
             logger.info(String.format("Incorrect authentication data Password [%s]", login.getPassword()));

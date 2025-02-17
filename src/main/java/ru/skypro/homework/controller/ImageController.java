@@ -43,7 +43,7 @@ public class ImageController {
             )
     })
     @GetMapping(value = "/{id}", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_GIF_VALUE, "image/*"})
-    public ResponseEntity<byte[]> getImage(@PathVariable("id") Integer id) throws IOException {
+    public ResponseEntity<byte[]> getImage(@PathVariable("id") Integer id) {
         try {
             byte[] image = imageService.getImageBytes(id);
             return ResponseEntity.ok(image);
