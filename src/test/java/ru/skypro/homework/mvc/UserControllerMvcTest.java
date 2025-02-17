@@ -12,8 +12,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockPart;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -21,6 +24,9 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.config.WebSecurityConfig;
 import ru.skypro.homework.controller.UserController;
 import ru.skypro.homework.dto.Role;
@@ -42,6 +48,7 @@ import java.security.Principal;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hibernate.tool.schema.SchemaToolingLogging.LOGGER;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -87,7 +94,7 @@ public class UserControllerMvcTest {
     public void beforeEach() {
         user = new User();
         user.setId(1);
-        user.setUsername("user");
+        user.setUsername("user@test");
         user.setPassword(passwordEncoder.encode("password"));
         user.setFirstname("Ivan");
         user.setLastname("Ivanov");
@@ -99,7 +106,7 @@ public class UserControllerMvcTest {
     }
 
     @Test
-    @WithMockUser(username = "user")
+    @WithMockUser(username = "user@test")
     @DisplayName("Тест на обновление пароля")
     public void setPasswordTest() throws Exception {
         NewPassword newPasswordDto = new NewPassword();
@@ -129,7 +136,7 @@ public class UserControllerMvcTest {
     }
 
     @Test
-    @WithMockUser(username = "user")
+    @WithMockUser(username = "user@test")
     @DisplayName("Тест на получение информации об авторизованном пользователе")
     public void getUserTest() throws Exception {
         UserDTO expected = userMapper.userToUserDto(user);
@@ -160,7 +167,7 @@ public class UserControllerMvcTest {
     }
 
     @Test
-    @WithMockUser(username = "user")
+    @WithMockUser(username = "user@test")
     @DisplayName("Тест на обновление информации об авторизованном пользователе")
     public void updateUserTest() throws Exception {
         UpdateUserDTO expected = new UpdateUserDTO();
@@ -170,19 +177,12 @@ public class UserControllerMvcTest {
 
         String username = user.getUsername();
 
-        Principal principal = new Principal() {
-            @Override
-            public String getName() {
-                return username;
-            }
-        };
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
 
         mockMvc.perform(
                         patch("/users/me")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(expected))
-                                .principal(principal))
+                                .content(objectMapper.writeValueAsString(expected)))
                 .andExpect(status().isOk())
                 .andExpect(result -> {
                     UpdateUserDTO updateUserDtoResult = objectMapper.readValue(
@@ -193,6 +193,25 @@ public class UserControllerMvcTest {
                 });
         verify(userService, times(1)).updateUser(eq(expected), any(Principal.class));
     }
+
+    @Test
+    @SneakyThrows
+    @WithMockUser(username = "user@test")
+    void updateUserImage() {
+        MockMultipartFile file = new MockMultipartFile("test.jpg", "message".getBytes());
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+        mockMvc.perform(
+                multipart("/users/me/image")
+                        .part(new MockPart("image", "test.jpg", "message".getBytes())))
+                        .andExpect(status().isOk()
+        );
+    }
 }
 
+//    @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity updateUserImage(@RequestParam MultipartFile image, Principal principal) {
+//        LOGGER.info(String.format("Получен запрос для updateUserImage: image = %s, " + "user = %s", image, principal.getName()));
+//        userService.updateUserImage(image, principal);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 

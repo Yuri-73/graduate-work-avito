@@ -83,7 +83,7 @@ public class UserController {
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = UpdateUserDTO.class))
     )
-    @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity updateUserImage(@RequestParam MultipartFile image, Principal principal) {
         LOGGER.info(String.format("Получен запрос для updateUserImage: image = %s, " + "user = %s", image, principal.getName()));
         userService.updateUserImage(image, principal);
